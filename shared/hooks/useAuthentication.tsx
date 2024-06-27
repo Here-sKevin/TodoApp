@@ -64,17 +64,14 @@ const useAuthentication = () => {
   }
 
   const login = async (username: string, password: string) => {
-    console.log("Login")
     const res = await getData(username);
     if(res) {
       const userData = JSON.parse(res) as User;
       if(userData) {
-        console.log("Login UserData")
         const newUser: AuthenticationUser = new AuthenticationUser(username, password);
         //setUserContext(newUser);
         setUser(newUser);
         //setIsAuthenticated(true);
-        //console.log("Login isAthenticated", isAuthenticated)
       }
     }
       

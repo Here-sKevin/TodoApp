@@ -1,21 +1,23 @@
 /* eslint-disable prettier/prettier */
 import { useForm } from '@resourge/react-form';
-import { number, object, string } from '@resourge/schema';
+import { object, string } from '@resourge/schema';
 
-type Todo = {
+export type TodoType = {
     id: number;
     title: string;
+    userId: number;
 }
 export class TodoModel {
   public id: number = 0;
   public title: string = '';
+  public userId: number = 0;
 
   /*constructor(todo: Todo) {
     this.id = todo.id;
     this.title = todo.title;
   }*/
 
-  public toModel(todo: Todo) {
+  public toModel(todo: TodoType) {
     return {
         id: todo.id,
         title: todo.title
@@ -24,7 +26,6 @@ export class TodoModel {
 }
 
 const schemaTodoModel = object<TodoModel>({
-    id: number().required('Obrigatorio'),
     title: string().required('Obrigatorio')
 }).compile();
 

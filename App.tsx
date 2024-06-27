@@ -15,9 +15,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
-  const { isAuthenticated, user } = useAuthentication();
-  console.log('isAuth: ', isAuthenticated);
-  console.log('User: ', user);
+  const { isAuthenticated } = useAuthentication();
   return (
     <Stack.Navigator>
       {isAuthenticated ? (

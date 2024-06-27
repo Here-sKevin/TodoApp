@@ -5,31 +5,21 @@ import {useNavigation} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {ActivityIndicator, Alert, Button, FlatList, Modal, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import useFetch from '../shared/hooks/useFetch';
-//import { TodoDto } from '../dto/TodoDto';
-
-interface ItemProps {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
- 
-/*interface ItemProps {
-  todo?:TodoDto[];
-} */
+import { TodoType, useTodoModel } from '../models/TodoModel';
 
 const TodoScreen: React.FC = () => {
   const navigation = useNavigation();
-  const [todos, setTodos] = useState<ItemProps[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editTitle, setEditTitle] = useState<string>('');
-  const [newTitle, setNewTitle] = useState<string>('');
+  const [todos, setTodos] = useState<TodoType[]>([]);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'delete' | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
-  const [selectedTodoTitle, setSelectedTodoTitle] = useState<string | null>(null);
+  const[selected, setSelected] = useState<TodoType | null>(null);
 
-  const {data, loading, error} = useFetch<ItemProps[]>('https://jsonplaceholder.typicode.com/todos');
+  const {data, loading, error} = useFetch<TodoType[]>('https://jsonplaceholder.typicode.com/todos');
+
+  const {
+		field,
+		handleSubmit
+	} = useTodoModel();
 
   useEffect(() => {
     if (data) {
@@ -37,41 +27,49 @@ const TodoScreen: React.FC = () => {
     }
   }, [data]);
 
-  const openModal = (type: 'create' | 'edit' | 'delete', id: number | null = null, title: string = '') => {
+  const openModal = (type: 'create' | 'edit' | 'delete', item: TodoType | null) => {
+    if(item != null) {
+      const itemData: TodoType = {
+        id: item.id,
+        userId: item.userId,
+        title: item.title
+      }
+      setSelected(itemData);
+    }
+
     setModalType(type);
-    if (type === 'edit' && id !== null) {
-      setEditingId(id);
-      setEditTitle(title);
-    }
-    if (type === 'delete' && id !== null) {
-      setEditingId(id);
-    }
     setModalVisible(true);
   };
 
   const closeModal = () => {
     setModalVisible(false);
     setModalType(null);
-    setEditingId(null);
-    setEditTitle('');
-    setNewTitle('');
-    setSelectedTodoId(null);
-    setSelectedTodoTitle(null);
   };
 
-  const handleDelete = async () => {
-    try{
+  const onSubmit = handleSubmit(async (data) => {
+		if(modalType === 'create') {
+        handleNewTodo(data);
+    }
+    if(modalType === 'edit') {
+      handleUpdate(data);
+    }
+    if(modalType === 'delete') {
+      handleDelete(data);
+    }
+	});
 
-      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${selectedTodoId}`, {
+  const handleDelete = async (data:TodoType) => {
+    try{
+      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${selected.id}`, {
         method: 'DELETE'
       });
 
       if(response.ok) {
-        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== selectedTodoId));
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== selected.id));
         closeModal();
       }
       else {
-        Alert.alert('Error', `Failed to delete Todo with id: ${selectedTodoId}`);
+        Alert.alert('Error', `Failed to delete Todo with id: ${selected.id}`);
       }
     } catch(error) {
       Alert.alert('Error', error.message);
@@ -79,45 +77,37 @@ const TodoScreen: React.FC = () => {
 
   }
 
-  const startEditing = (id: number, title: string) => {
-    setEditingId(id);
-    setEditTitle(title);
-  };
-
-  const handleUpdate = async () => {
-    if (editingId === null) return;
+  const handleUpdate = async (data: TodoType) => {
+    if (selected.id === null) return;
 
     try {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${editingId}`, {
+      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${selected.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: editTitle,
+          title: data.title,
           completed: false,
-          userId: 1,
+          userId: selected.userId,
         }),
       });
-
       if (response.ok) {
         const updatedTodo = await response.json();
         setTodos(prevTodos =>
-          prevTodos.map(todo => (todo.id === editingId ? updatedTodo : todo))
+          prevTodos.map(todo => (todo.id === selected.id ? updatedTodo : todo))
         );
-        setEditingId(null);
-        setEditTitle('');
         closeModal();
       } else {
-        Alert.alert('Error', `Failed to update Todo with id: ${editingId}`);
+        Alert.alert('Error', `Failed to update Todo with id: ${selected.id}`);
       }
     } catch (error) {
       Alert.alert('Error', error.message);
     }
   }
 
-  const handleNewTodo = async () => {
-    if (!newTitle.trim()) {
+  const handleNewTodo = async (data: TodoType) => {
+    if (!data.title.trim()) {
       Alert.alert('Error', 'Title cannot be empty');
       return;
     }
@@ -128,7 +118,7 @@ const TodoScreen: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: newTitle,
+          title: data.title,
           completed: false,
           userId: 1,
         }),
@@ -137,7 +127,6 @@ const TodoScreen: React.FC = () => {
       if (response.ok) {
         const newTodo = await response.json();
         setTodos([newTodo, ...todos]);
-        setNewTitle('');
         closeModal();
       } else {
         Alert.alert('Error', 'Failed to create new Todo');
@@ -158,30 +147,22 @@ const TodoScreen: React.FC = () => {
         />
       </View>
       <View>
-        <Button title='Create' onPress={() => openModal('create')} />
+        <Button title='Create' onPress={() => openModal('create', null)} />
       </View>
       <SafeAreaView style={styles.container}>
         <FlatList
           data={todos}
           renderItem={({item}) => (
             <View style={styles.item}>
-              {editingId === item.id ? (
-                <>
-                  <TextInput value={editTitle} onChangeText={setEditTitle} />
-                  <Button title="Guardar" onPress={handleUpdate} />
-                </>
-              ) : (
                 <>
                   <Text style={styles.title}>{item.title}</Text><View>
-                    <Button title='Editar' onPress={() => {startEditing(item.id, item.title); openModal('edit') }}/>
+                    <Button title='Editar' onPress={() => {openModal('edit', item) }}/>
                     <Button title='Apagar' onPress={() => {
-                    setSelectedTodoTitle(item.title);
-                    setSelectedTodoId(item.id);
-                    openModal('delete');
+                    openModal('delete', item);
                   }} />
                   </View>
                 </>
-              )}
+
               
               
             </View>
@@ -196,25 +177,25 @@ const TodoScreen: React.FC = () => {
       >
          {modalType === "create" && (
           <>
-            <TextInput placeholder='New Todo' value={newTitle} onChangeText={setNewTitle} />
+            <TextInput placeholder='New Todo' /*value={newTitle}*/ /*onChangeText={setNewTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
             <Button title='Cancel' onPress={closeModal} />
-            <Button title='Create' onPress={handleNewTodo} />
+            <Button title='Create' onPress={() => onSubmit()} />
           </>          
          )}
  
         {modalType === "edit" && (
           <>
-             <TextInput value={editTitle} onChangeText={setEditTitle} />
+             <TextInput /*value={selected.title}*/ /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
              <Button title='Cancel' onPress={closeModal} />
-             <Button title="Editar" onPress={handleUpdate} />
+             <Button title="Editar" onPress={() => onSubmit()} />
           </>          
          )}
 
         {modalType === "delete" && (
           <>
-             <Text>Quer Apagar o todo: {selectedTodoTitle} ?</Text>
+             <Text>Quer Apagar o todo: {selected.title}  ?</Text>
              <Button title='Cancel' onPress={closeModal} />
-             <Button title='Apagar' onPress={handleDelete} />
+             <Button title='Apagar' onPress={() => onSubmit()} />
           </>          
          )}
       </Modal>
