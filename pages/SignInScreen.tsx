@@ -3,6 +3,8 @@ import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import useAuthentication from '../shared/hooks/useAuthentication';
 import { useLoginModel } from '../models/LoginModel';
+import {Input as InputComp} from '../components/ui/Input';
+import { Button as ButtonComp } from '../components/ui/Button'
 
 
 type NavigationProps = {
@@ -26,18 +28,22 @@ const SignInScreen: React.FC<NavigationProps> = ({navigation}) => {
 	});
   return (
     <>
-      <View>
-        <Button
-          title="Go to SignUp"
-          onPress={() => navigation.navigate('SignUp')}
-        />
-      </View>
-      
       <View style={styles.container}>      
         <TextInput style={styles.input} placeholder='Username' onChangeText={(e) => field('username').onChange(e)} />
-        <TextInput style={styles.input} placeholder='Password' onChangeText={(e) => field('password').onChange(e)} />
-        <Button title='Login' onPress={() => onSubmit()}/>
-      </View>
+        <TextInput style={styles.input} placeholder='Password' secureTextEntry onChangeText={(e) => field('password').onChange(e)} />
+        <View style={styles.row}>
+          <View style={styles.buttonContainer}>
+            <ButtonComp
+              title="Go to SignUp"
+              variant='outline'
+              onPress={() => navigation.navigate('SignUp')}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <ButtonComp title='Login' size='md' onPress={() => onSubmit()}/>
+          </View>
+        </View>
+      </View>     
     </>
   );
 };
@@ -57,6 +63,15 @@ const styles = StyleSheet.create({
     },
     displayText: {
       fontSize: 18,
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      margin: 10,
+    },
+    buttonContainer: {
+      flex: 1,
+      margin: 10,
     },
   });
 

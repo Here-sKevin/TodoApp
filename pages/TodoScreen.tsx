@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import {ActivityIndicator, Alert, Button, FlatList, Modal, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import useFetch from '../shared/hooks/useFetch';
 import { TodoType, useTodoModel } from '../models/TodoModel';
+import { Button as ButtonComp } from '../components/ui/Button'
+import { Text as TextComp } from '../components/ui/Text'
 
 const TodoScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -141,13 +143,18 @@ const TodoScreen: React.FC = () => {
   return (
     <>
       <View>
-        <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate('Home')}
-        />
-      </View>
-      <View>
-        <Button title='Create' onPress={() => openModal('create', null)} />
+                  <View style={styles.row}>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp
+                        title="Go to Home"
+                        onPress={() => navigation.navigate('Home')}
+                      />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title='Create Todo' onPress={() => openModal('create', null)} />
+                    </View>
+                  </View>
+        
       </View>
       <SafeAreaView style={styles.container}>
         <FlatList
@@ -155,48 +162,86 @@ const TodoScreen: React.FC = () => {
           renderItem={({item}) => (
             <View style={styles.item}>
                 <>
-                  <Text style={styles.title}>{item.title}</Text><View>
-                    <Button title='Editar' onPress={() => {openModal('edit', item) }}/>
-                    <Button title='Apagar' onPress={() => {
-                    openModal('delete', item);
-                  }} />
+                  <TextComp style={styles.title} size='lg'>{item.title}</TextComp>
+                  <View>
+                  <View style={styles.row}>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title='Editar' size='sm' variant='outline' onPress={() => {openModal('edit', item) }}/>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title='Apagar' size='sm' variant='outline' onPress={() => {
+                        openModal('delete', item);
+                      }} />
+                    </View>
+                  </View>
+                    
+                    
                   </View>
                 </>
-
-              
-              
             </View>
           )}          
         />
 
       <Modal
-        transparent={false}
+        transparent={true}
         animationType="slide"
         visible={modalVisible}
         onRequestClose={closeModal}
       >
          {modalType === "create" && (
           <>
-            <TextInput placeholder='New Todo' /*value={newTitle}*/ /*onChangeText={setNewTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
-            <Button title='Cancel' onPress={closeModal} />
-            <Button title='Create' onPress={() => onSubmit()} />
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+                <TextInput style={styles.input} placeholder='New Todo' /*value={newTitle}*/ /*onChangeText={setNewTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
+                  <View style={styles.row}>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title='Cancel' onPress={closeModal} />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title='Create' onPress={() => onSubmit()} />
+                    </View>
+                  </View>
+            </View>         
+          </View>
+            
           </>          
          )}
  
         {modalType === "edit" && (
           <>
-             <TextInput /*value={selected.title}*/ /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
-             <Button title='Cancel' onPress={closeModal} />
-             <Button title="Editar" onPress={() => onSubmit()} />
-          </>          
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <TextInput style={styles.input} /*value={selected.title}*/ /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
+                  <View style={styles.row}>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title='Cancel' onPress={closeModal} />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                      <ButtonComp title="Editar" onPress={() => onSubmit()} />
+                    </View>
+                  </View>
+            </View>         
+          </View>
+            
+          </>    
          )}
 
         {modalType === "delete" && (
           <>
-             <Text>Quer Apagar o todo: {selected.title}  ?</Text>
-             <Button title='Cancel' onPress={closeModal} />
-             <Button title='Apagar' onPress={() => onSubmit()} />
-          </>          
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+              <Text>Quer Apagar o todo: {selected.title}  ?</Text>
+                    <View style={styles.row}>
+                      <View style={styles.buttonContainer}>
+                        <ButtonComp title='Cancel' onPress={closeModal} />
+                      </View>
+                      <View style={styles.buttonContainer}>
+                      <ButtonComp title='Apagar' onPress={() => onSubmit()} />
+                      </View>
+                    </View>
+              </View>         
+            </View> 
+          </>      
          )}
       </Modal>
       </SafeAreaView>
@@ -210,10 +255,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   item: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'transparent',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'lightgrey'
   },
   title: {
     fontSize: 20,
@@ -222,7 +270,45 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '50%',
-  }
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    margin: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContent: {
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 10, // For Android shadow
+    shadowColor: '#000', // For iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  input: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    width:300
+  },
 });
 
 export default TodoScreen;

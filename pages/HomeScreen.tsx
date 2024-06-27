@@ -2,10 +2,12 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Button, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import { useTranslation } from '../shared/Translations';
 import useAuthentication from '../shared/hooks/useAuthentication';
 import notifee from '@notifee/react-native';
+import { Button as ButtonComp } from '../components/ui/Button'
+import { Text as TextComp } from '../components/ui/Text'
 
 type Props = {
   navigation: {
@@ -44,23 +46,61 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
   return (
     <>
-      <View>
-        <Button title='Logout' onPress={redirect} />
-        <Button
-          title="Go to Todo"
-          onPress={() => navigation.navigate('Todo')}
-        />
-        <Button
-          title="Go to Photo"
-          onPress={() => navigation.navigate('Photo')}
-        />
-        <Button title="Launch notification" onPress={() => onDisplayNotification()} />
-      </View>
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>{T.home_screen.welcome} {user?.username}</Text>
+        <TextComp size='xl' color='secondary'>{T.home_screen.welcome} {user?.username}</TextComp>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.row}>
+          <View style={styles.buttonContainer}>
+            <ButtonComp title='Logout' size='md' onPress={redirect} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <ButtonComp
+              title="Go to Todo"
+              size='md'
+              variant='outline'
+              onPress={() => navigation.navigate('Todo')}
+            />
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.buttonContainer}>
+            <ButtonComp
+              title="Go to Photo"
+              size='md'
+              variant='outline'
+              onPress={() => navigation.navigate('Photo')}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <ButtonComp title="Launch notification" size='md' onPress={() => onDisplayNotification()} />
+          </View>
+        </View>
+        
+
+
+        
       </View>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    margin: 10,
+  },
+});
 
 export default HomeScreen;
