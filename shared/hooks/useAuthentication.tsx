@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { useEffect, useMemo } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
+import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuthenticationContext } from '../../context/UserContext';
 import { AuthenticationUser } from '../authentication/Authentication';
