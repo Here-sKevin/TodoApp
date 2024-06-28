@@ -138,7 +138,15 @@ const TodoScreen: React.FC = () => {
     }
   }
 
-  if(loading) return <ActivityIndicator />
+  if(loading){
+    return(
+      <>
+      <View>
+        <ActivityIndicator style={{alignItems: "center", justifyContent: "center"}} size="large" />
+      </View>
+      </>         
+    ) 
+  } 
   if(error) return <Text>Error Message: {error.message}</Text>
   return (
     <>
