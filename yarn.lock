@@ -2182,6 +2182,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/cameraroll@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "@react-native-community/cameraroll@npm:4.1.2"
+  peerDependencies:
+    react: 16 || 17
+    react-native: ">=0.60"
+  checksum: 2eb79f5538f50c66ed79f16e16ac02178ed3b64686c2a6d6218666999ef2f6349f40f0f7069e00e4b9236791b0a9f2b9badcfd1062e6605ad7f0fb27e6c2604a
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-clean@npm:13.6.8":
   version: 13.6.8
   resolution: "@react-native-community/cli-clean@npm:13.6.8"
@@ -3158,6 +3168,7 @@ __metadata:
     "@babel/runtime": ^7.20.0
     "@notifee/react-native": ^7.8.2
     "@react-native-async-storage/async-storage": ^1.23.1
+    "@react-native-community/cameraroll": ^4.1.2
     "@react-native/babel-preset": 0.74.84
     "@react-native/eslint-config": 0.74.84
     "@react-native/metro-config": 0.74.84
@@ -3172,10 +3183,13 @@ __metadata:
     "@types/react-test-renderer": ^18.0.0
     babel-jest: ^29.6.3
     eslint: ^8.19.0
+    fbjs: ^3.0.5
     jest: ^29.6.3
     prettier: 2.8.8
     react: 18.2.0
     react-native: 0.74.2
+    react-native-camera-kit: ^13.0.0
+    react-native-permissions: ^4.1.5
     react-native-safe-area-context: ^4.10.5
     react-native-screens: ^3.32.0
     react-test-renderer: 18.2.0
@@ -3481,7 +3495,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"asap@npm:~2.0.6":
+"asap@npm:~2.0.3, asap@npm:~2.0.6":
   version: 2.0.6
   resolution: "asap@npm:2.0.6"
   checksum: b296c92c4b969e973260e47523207cd5769abd27c245a68c26dc7a0fe8053c55bb04360237cb51cab1df52be939da77150ace99ad331fb7fb13b3423ed73ff3d
@@ -4162,6 +4176,15 @@ __metadata:
   bin:
     create-jest: bin/create-jest.js
   checksum: 1427d49458adcd88547ef6fa39041e1fe9033a661293aa8d2c3aa1b4967cb5bf4f0c00436c7a61816558f28ba2ba81a94d5c962e8022ea9a883978fc8e1f2945
+  languageName: node
+  linkType: hard
+
+"cross-fetch@npm:^3.1.5":
+  version: 3.1.8
+  resolution: "cross-fetch@npm:3.1.8"
+  dependencies:
+    node-fetch: ^2.6.12
+  checksum: 78f993fa099eaaa041122ab037fe9503ecbbcb9daef234d1d2e0b9230a983f64d645d088c464e21a247b825a08dc444a6e7064adfa93536d3a9454b4745b3632
   languageName: node
   linkType: hard
 
@@ -5044,6 +5067,28 @@ __metadata:
   dependencies:
     bser: 2.1.1
   checksum: b15a124cef28916fe07b400eb87cbc73ca082c142abf7ca8e8de6af43eca79ca7bd13eb4d4d48240b3bd3136eaac40d16e42d6edf87a8e5d1dd8070626860c78
+  languageName: node
+  linkType: hard
+
+"fbjs-css-vars@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "fbjs-css-vars@npm:1.0.2"
+  checksum: 72baf6d22c45b75109118b4daecb6c8016d4c83c8c0f23f683f22e9d7c21f32fff6201d288df46eb561e3c7d4bb4489b8ad140b7f56444c453ba407e8bd28511
+  languageName: node
+  linkType: hard
+
+"fbjs@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "fbjs@npm:3.0.5"
+  dependencies:
+    cross-fetch: ^3.1.5
+    fbjs-css-vars: ^1.0.0
+    loose-envify: ^1.0.0
+    object-assign: ^4.1.0
+    promise: ^7.1.1
+    setimmediate: ^1.0.5
+    ua-parser-js: ^1.0.35
+  checksum: e609b5b64686bc96495a5c67728ed9b2710b9b3d695c5759c5f5e47c9483d1c323543ac777a86459e3694efc5712c6ce7212e944feb19752867d699568bb0e54
   languageName: node
   linkType: hard
 
@@ -6907,7 +6952,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.21":
+"lodash@npm:^4.14.2, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -7521,7 +7566,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.2.0, node-fetch@npm:^2.6.0":
+"node-fetch@npm:^2.2.0, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.12":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -7624,7 +7669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:^4.1.1":
+"object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: fcc6e4ea8c7fe48abfbb552578b1c53e0d194086e2e6bbbf59e0a536381a292f39943c6e9628af05b5528aa5e3318bb30d6b2e53cadaf5b8fe9e12c4b69af23f
@@ -8085,6 +8130,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"promise@npm:^7.1.1":
+  version: 7.3.1
+  resolution: "promise@npm:7.3.1"
+  dependencies:
+    asap: ~2.0.3
+  checksum: 475bb069130179fbd27ed2ab45f26d8862376a137a57314cf53310bdd85cc986a826fd585829be97ebc0aaf10e9d8e68be1bfe5a4a0364144b1f9eedfa940cf1
+  languageName: node
+  linkType: hard
+
 "promise@npm:^8.3.0":
   version: 8.3.0
   resolution: "promise@npm:8.3.0"
@@ -8208,6 +8262,32 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: e20fe84c86ff172fc8d898251b7cc2c43645d108bf96d0b8edf39b98f9a2cae97b40520ee7ed8ee0085ccc94736c4886294456033304151c3f94978cec03df21
+  languageName: node
+  linkType: hard
+
+"react-native-camera-kit@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "react-native-camera-kit@npm:13.0.0"
+  dependencies:
+    lodash: ^4.14.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 5d795bf46935012d501d421c414cac24afd6ce4bd753ad4aedd621bbf5034650bfd6285bea0ae32e62d49316a5a8976b73676bcaefea7496abd3141f7337f382
+  languageName: node
+  linkType: hard
+
+"react-native-permissions@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "react-native-permissions@npm:4.1.5"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: dc4b366a0f561a47f032c027eb703a2be45e801788b915ed583e38f617eea23656eb63a77b17fb3a663fe3199b2ec25788f799e751421634e35a64f5258feed9
   languageName: node
   linkType: hard
 
@@ -8791,6 +8871,13 @@ __metadata:
     functions-have-names: ^1.2.3
     has-property-descriptors: ^1.0.2
   checksum: d6229a71527fd0404399fc6227e0ff0652800362510822a291925c9d7b48a1ca1a468b11b281471c34cd5a2da0db4f5d7ff315a61d26655e77f6e971e6d0c80f
+  languageName: node
+  linkType: hard
+
+"setimmediate@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "setimmediate@npm:1.0.5"
+  checksum: c9a6f2c5b51a2dabdc0247db9c46460152ffc62ee139f3157440bd48e7c59425093f42719ac1d7931f054f153e2d26cf37dfeb8da17a794a58198a2705e527fd
   languageName: node
   linkType: hard
 
@@ -9508,6 +9595,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: d26b6ba97b6d163c55dbdffd9bbb4c211667ebebc743accfeb2c8c0154aace7afd097b51165a72a5bad2cf65a4612259344ff60f8e642362aa1695c760d303ac
+  languageName: node
+  linkType: hard
+
+"ua-parser-js@npm:^1.0.35":
+  version: 1.0.38
+  resolution: "ua-parser-js@npm:1.0.38"
+  checksum: d0772b22b027338d806ab17d1ac2896ee7485bdf9217c526028159f3cd6bb10272bb18f6196d2f94dde83e3b36dc9d2533daf08a414764f6f4f1844842383838
   languageName: node
   linkType: hard
 

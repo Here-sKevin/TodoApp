@@ -20,7 +20,8 @@ const TodoScreen: React.FC = () => {
 
   const {
 		field,
-		handleSubmit
+		handleSubmit,
+    reset
 	} = useTodoModel();
 
   useEffect(() => {
@@ -36,7 +37,8 @@ const TodoScreen: React.FC = () => {
         userId: item.userId,
         title: item.title
       }
-      setSelected(itemData);
+      //setSelected(itemData);
+      reset(item);
     }
 
     setModalType(type);
@@ -219,7 +221,7 @@ const TodoScreen: React.FC = () => {
           <>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <TextInput style={styles.input} /*value={selected.title}*/ /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
+              <TextInput style={styles.input} value={field('title').value} /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
                       <ButtonComp title='Cancel' onPress={closeModal} />

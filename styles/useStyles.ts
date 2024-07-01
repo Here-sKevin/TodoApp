@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useMemo } from 'react';
 import { useTheme, } from './useTheme';
 import { AppTheme } from './theme';
