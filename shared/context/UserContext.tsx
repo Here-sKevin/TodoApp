@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { AuthenticationUser } from '../shared/authentication/Authentication';
+import { AuthenticationUser } from '../authentication/Authentication';
 
 interface UserContextType {
     user: AuthenticationUser | undefined;

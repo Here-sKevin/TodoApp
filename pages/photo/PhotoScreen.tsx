@@ -2,13 +2,14 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import {useNavigation} from '@react-navigation/native';
-import {Alert, Button, Image, PermissionsAndroid, Platform, StyleSheet, Text, View} from 'react-native';
-import { Camera, CameraType, CameraScreen } from 'react-native-camera-kit';
-import { Button as ButtonComp } from '../components/ui/Button'
+import {Image, View} from 'react-native';
+import { CameraScreen } from 'react-native-camera-kit';
+import { Button as ButtonComp } from '../../components/ui/Button'
 import CameraRoll from '@react-native-community/cameraroll';
 import { request, PERMISSIONS } from 'react-native-permissions';
 
 import React, { useEffect, useState } from 'react';
+import { styles } from './PhotoScreen.styles';
 const PhotoScreen: React.FC = () => {
   const navigation = useNavigation();
   const [cameraOpen, setCameraOpen] = useState<boolean>(false);
@@ -109,7 +110,7 @@ const PhotoScreen: React.FC = () => {
           <CameraScreen
             actions={{ leftButtonText: 'Cancel', rightButtonText: 'Done' }}
             onBottomButtonPressed={(event) => onBottomButtonPressed(event)}
-            captureButtonImage={require('../images/capture.png')} // optional, image capture button
+            captureButtonImage={require('../../images/capture.png')} // optional, image capture button
             showCapturedImageCount={true}
             /*flashImages={{
               // optional, images for flash state
@@ -139,18 +140,5 @@ const PhotoScreen: React.FC = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 10,
-  },
-  buttonContainer: {
-    flex: 1,
-    margin: 10,
-  },
-
-});
 
 export default PhotoScreen;

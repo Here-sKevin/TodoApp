@@ -1,22 +1,23 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-undef */
+/* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 import {useNavigation} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {ActivityIndicator, Alert, Button, FlatList, Modal, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
-import useFetch from '../shared/hooks/useFetch';
-import { TodoType, useTodoModel } from '../models/TodoModel';
-import { Button as ButtonComp } from '../components/ui/Button'
-import { Text as TextComp } from '../components/ui/Text'
+import {ActivityIndicator, Alert, FlatList, Modal, SafeAreaView, Text, TextInput, View} from 'react-native';
+//import useFetch from '../shared/hooks/useFetch';
+import { TodoModel, TodoType, useTodoModel } from './interface/TodoModel';
+import { Button as ButtonComp } from '../../components/ui/Button'
+import { Text as TextComp } from '../../components/ui/Text'
+import { styles } from './TodoScreen.styles';
+import TodoScreenApi from './TodoScreenApi';
 
 const TodoScreen: React.FC = () => {
   const navigation = useNavigation();
-  const [todos, setTodos] = useState<TodoType[]>([]);
+  const [todos, setTodos] = useState<TodoModel[] | []>([]);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'delete' | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const[selected, setSelected] = useState<TodoType | null>(null);
-
-  const {data, loading, error} = useFetch<TodoType[]>('https://jsonplaceholder.typicode.com/todos');
+  //const {data, loading, error} = useFetch<TodoType[]>('https://jsonplaceholder.typicode.com/todos');
+ 
+  
 
   const {
 		field,
@@ -25,22 +26,20 @@ const TodoScreen: React.FC = () => {
 	} = useTodoModel();
 
   useEffect(() => {
-    if (data) {
-      setTodos(data.slice(0, 10));
+
+    const fetchData = async () => {
+      const tdata = await TodoScreenApi.getTodos();
+      console.log('Data TODOS: ', tdata)
+      setTodos(tdata);
     }
-  }, [data]);
+    fetchData();
+
+  }, []);
 
   const openModal = (type: 'create' | 'edit' | 'delete', item: TodoType | null) => {
     if(item != null) {
-      const itemData: TodoType = {
-        id: item.id,
-        userId: item.userId,
-        title: item.title
-      }
-      //setSelected(itemData);
       reset(item);
     }
-
     setModalType(type);
     setModalVisible(true);
   };
@@ -62,85 +61,49 @@ const TodoScreen: React.FC = () => {
     }
 	});
 
-  const handleDelete = async (data:TodoType) => {
+  const handleDelete = async (dataItem:TodoModel) => {
     try{
-      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${selected.id}`, {
-        method: 'DELETE'
-      });
-
-      if(response.ok) {
-        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== selected.id));
+        await TodoScreenApi.deleteTodo(dataItem);
+        const d = await TodoScreenApi.getTodos();
+        setTodos(d);
         closeModal();
-      }
-      else {
-        Alert.alert('Error', `Failed to delete Todo with id: ${selected.id}`);
-      }
     } catch(error) {
       Alert.alert('Error', error.message);
     }
 
   }
 
-  const handleUpdate = async (data: TodoType) => {
-    if (selected.id === null) return;
+  const handleUpdate = async (dataItem: TodoModel) => {
+    if (dataItem.id === null) return;
 
     try {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${selected.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: data.title,
-          completed: false,
-          userId: selected.userId,
-        }),
-      });
-      if (response.ok) {
-        const updatedTodo = await response.json();
-        setTodos(prevTodos =>
-          prevTodos.map(todo => (todo.id === selected.id ? updatedTodo : todo))
-        );
-        closeModal();
-      } else {
-        Alert.alert('Error', `Failed to update Todo with id: ${selected.id}`);
-      }
+      await TodoScreenApi.updateTodo(dataItem);
+      const d = await TodoScreenApi.getTodos();
+      console.log('Data TODOS: ', d)
+      setTodos(d);
+      closeModal();    
     } catch (error) {
       Alert.alert('Error', error.message);
     }
   }
 
-  const handleNewTodo = async (data: TodoType) => {
-    if (!data.title.trim()) {
+  const handleNewTodo = async (dataItem: TodoModel) => {
+    if (!dataItem.title.trim()) {
       Alert.alert('Error', 'Title cannot be empty');
       return;
     }
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: data.title,
-          completed: false,
-          userId: 1,
-        }),
-      });
+      await TodoScreenApi.createTodo(dataItem);
+      const d = await TodoScreenApi.getTodos();
+      setTodos(d);
+      closeModal();
 
-      if (response.ok) {
-        const newTodo = await response.json();
-        setTodos([newTodo, ...todos]);
-        closeModal();
-      } else {
-        Alert.alert('Error', 'Failed to create new Todo');
-      }
     } catch(error) {
       Alert.alert('Error', error.message);
     }
   }
 
-  if(loading){
+  /*if(loading){
     return(
       <>
       <View>
@@ -149,7 +112,7 @@ const TodoScreen: React.FC = () => {
       </>         
     ) 
   } 
-  if(error) return <Text>Error Message: {error.message}</Text>
+  if(error) return <Text>Error Message: {error.message}</Text>*/
   return (
     <>
       <View>
@@ -240,7 +203,7 @@ const TodoScreen: React.FC = () => {
           <>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
-              <Text>Quer Apagar o todo: {selected.title}  ?</Text>
+              <Text>Quer Apagar o todo: {field('title').value}  ?</Text>
                     <View style={styles.row}>
                       <View style={styles.buttonContainer}>
                         <ButtonComp title='Cancel' onPress={closeModal} />
@@ -258,68 +221,6 @@ const TodoScreen: React.FC = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  item: {
-    backgroundColor: 'transparent',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'lightgrey'
-  },
-  title: {
-    fontSize: 20,
-    display: 'flex', 
-    textAlign: 'center'
-  },
-  button: {
-    width: '50%',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 10,
-  },
-  buttonContainer: {
-    flex: 1,
-    margin: 10,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-  },
-  modalContent: {
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-    elevation: 10, // For Android shadow
-    shadowColor: '#000', // For iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  input: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    width:300
-  },
-});
 
 export default TodoScreen;
  

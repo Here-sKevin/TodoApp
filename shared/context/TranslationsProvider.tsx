@@ -3,7 +3,7 @@ import React, {type ReactNode} from 'react';
 
 import {TranslationProvider} from '@resourge/react-translations';
 
-import {TranslationInstance} from './shared/Translations';
+import {TranslationInstance} from '../translations/Translations';
 
 type Props = {
   children?: ReactNode;

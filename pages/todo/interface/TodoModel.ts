@@ -5,19 +5,19 @@ import { object, string } from '@resourge/schema';
 export type TodoType = {
     id: number;
     title: string;
-    userId: number;
+    //userId: number;
 }
 export class TodoModel {
   public id: number = 0;
   public title: string = '';
-  public userId: number = 0;
+  //public userId: number = 0;
 
   /*constructor(todo: Todo) {
     this.id = todo.id;
     this.title = todo.title;
   }*/
 
-  public toModel(todo: TodoType) {
+  public toModel(todo: TodoModel) {
     return {
         id: todo.id,
         title: todo.title
