@@ -9,7 +9,7 @@ import Translations from './shared/context/TranslationsProvider';;
 import SignUpScreen from './pages/signup/SignUpScreen';
 import SignInScreen from './pages/signin/SignInScreen';
 import { useTheme } from './styles/useTheme';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 import DatabaseProvider from './shared/context/DatabaseProvider';
 import useAuthentication from './shared/authentication/hooks/useAuthentication';
 import TodoScreen from './pages/todo/TodoScreen';
@@ -58,12 +58,9 @@ const App: React.FC = () => {
                   <Tab.Screen
                     name="Tab"
                     component={StackNav}
-                    /*options={{ 
+                    options={{ 
                       tabBarLabel: 'Home', 
-                      tabBarIcon: () => (
-                        <AntDesign name="home" size={24} color="black" />
-                      )
-                    }}*/
+                      tabBarIcon: () => <Image source={require('./images/home.png')} /> }}
                   />
                 </Tab.Navigator>
               </NavigationContainer>

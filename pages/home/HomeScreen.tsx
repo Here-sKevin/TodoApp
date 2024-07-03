@@ -3,7 +3,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useLayoutEffect } from 'react';
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import { useTranslation } from '../../shared/translations/Translations';
 import notifee from '@notifee/react-native';
 import { Button as ButtonComp } from '../../components/ui/Button'
@@ -51,6 +51,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   useLayoutEffect(() => {
     nav.setOptions({
       headerTitle: 'Home',
+      headerLeft: () => (<Image source={require('../../images/home.png')} />),
       headerRight: () => (
         <>
           <View style={{ paddingRight: 10 }}>
@@ -60,6 +61,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         </>
         
       ),
+      
     });
   }, [nav]);
 
