@@ -15,6 +15,7 @@ import useAuthentication from './shared/authentication/hooks/useAuthentication';
 import TodoScreen from './pages/todo/TodoScreen';
 import PhotoScreen from './pages/photo/PhotoScreen';
 import { UserProvider } from './shared/context/UserContext';
+import UsersScreen from './pages/users/UsersScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ const StackNav = () => {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Todo" component={TodoScreen} />
           <Stack.Screen name="Photo" component={PhotoScreen} />
+          <Stack.Screen name="Users" component={UsersScreen} />
         </>
       ) : (
         <>

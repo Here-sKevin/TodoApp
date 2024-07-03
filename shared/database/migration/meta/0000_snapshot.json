@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f3eefda0-6a88-4985-bf53-67e1cb7f427b",
+  "id": "7acc28af-bd28-405a-bdfb-4d727d0e2a4d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Todos": {
@@ -17,6 +17,13 @@
         "title": {
           "name": "title",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

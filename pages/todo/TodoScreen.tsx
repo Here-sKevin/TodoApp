@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import {useNavigation} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {ActivityIndicator, Alert, FlatList, Modal, SafeAreaView, Text, TextInput, View} from 'react-native';
 //import useFetch from '../shared/hooks/useFetch';
@@ -9,32 +8,49 @@ import { Button as ButtonComp } from '../../components/ui/Button'
 import { Text as TextComp } from '../../components/ui/Text'
 import { styles } from './TodoScreen.styles';
 import TodoScreenApi from './TodoScreenApi';
+import { Checkbox } from '../../components/ui/Checkbox';
+import useAuthentication from '../../shared/authentication/hooks/useAuthentication';
+import { useTranslation } from '../../shared/translations/Translations';
+import FormControl from '../../components/ui/FormControl';
 
 const TodoScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const { T } = useTranslation();
   const [todos, setTodos] = useState<TodoModel[] | []>([]);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'delete' | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   //const {data, loading, error} = useFetch<TodoType[]>('https://jsonplaceholder.typicode.com/todos');
- 
+  const [isChecked, setIsChecked] = useState(true);
   
-
   const {
 		field,
 		handleSubmit,
-    reset
+    reset,
+    getErrors
 	} = useTodoModel();
+
+  const {user} = useAuthentication();
 
   useEffect(() => {
 
     const fetchData = async () => {
-      const tdata = await TodoScreenApi.getTodos();
+      const tdata = await TodoScreenApi.getMyTodos(user);
       console.log('Data TODOS: ', tdata)
       setTodos(tdata);
     }
     fetchData();
 
   }, []);
+
+  const toggleCheckbox = async () => {
+    let tdata;
+    if(!isChecked)
+      tdata = await TodoScreenApi.getMyTodos(user)
+    else
+      tdata = await TodoScreenApi.getTodos()
+
+    setTodos(tdata);
+    setIsChecked((previousState) => !previousState);
+  } 
 
   const openModal = (type: 'create' | 'edit' | 'delete', item: TodoType | null) => {
     if(item != null) {
@@ -50,6 +66,7 @@ const TodoScreen: React.FC = () => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log('Submit')
 		if(modalType === 'create') {
         handleNewTodo(data);
     }
@@ -64,7 +81,11 @@ const TodoScreen: React.FC = () => {
   const handleDelete = async (dataItem:TodoModel) => {
     try{
         await TodoScreenApi.deleteTodo(dataItem);
-        const d = await TodoScreenApi.getTodos();
+        let d;
+      if(!isChecked)
+         d = await TodoScreenApi.getTodos();
+      else
+         d = await TodoScreenApi.getMyTodos(user);
         setTodos(d);
         closeModal();
     } catch(error) {
@@ -78,8 +99,11 @@ const TodoScreen: React.FC = () => {
 
     try {
       await TodoScreenApi.updateTodo(dataItem);
-      const d = await TodoScreenApi.getTodos();
-      console.log('Data TODOS: ', d)
+      let d;
+      if(!isChecked)
+         d = await TodoScreenApi.getTodos();
+      else
+         d = await TodoScreenApi.getMyTodos(user);
       setTodos(d);
       closeModal();    
     } catch (error) {
@@ -93,8 +117,12 @@ const TodoScreen: React.FC = () => {
       return;
     }
     try {
-      await TodoScreenApi.createTodo(dataItem);
-      const d = await TodoScreenApi.getTodos();
+      await TodoScreenApi.createTodo(dataItem, user);
+      let d;
+      if(!isChecked)
+         d = await TodoScreenApi.getTodos();
+      else
+         d = await TodoScreenApi.getMyTodos(user);
       setTodos(d);
       closeModal();
 
@@ -117,14 +145,15 @@ const TodoScreen: React.FC = () => {
     <>
       <View>
                   <View style={styles.row}>
-                    <View style={styles.buttonContainer}>
-                      <ButtonComp
-                        title="Go to Home"
-                        onPress={() => navigation.navigate('Home')}
-                      />
+                    <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+                    <Checkbox
+                      label={T.todo_screen.buttonTodos}
+                      onValueChange={toggleCheckbox}
+                      value={isChecked}
+                    />
                     </View>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title='Create Todo' onPress={() => openModal('create', null)} />
+                      <ButtonComp title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
                     </View>
                   </View>
         
@@ -139,10 +168,10 @@ const TodoScreen: React.FC = () => {
                   <View>
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title='Editar' size='sm' variant='outline' onPress={() => {openModal('edit', item) }}/>
+                      <ButtonComp isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonEdit} size='sm' variant='outline' onPress={() => {openModal('edit', item) }}/>
                     </View>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title='Apagar' size='sm' variant='outline' onPress={() => {
+                      <ButtonComp isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonDelete} size='sm' variant='outline' onPress={() => {
                         openModal('delete', item);
                       }} />
                     </View>
@@ -165,13 +194,16 @@ const TodoScreen: React.FC = () => {
           <>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-                <TextInput style={styles.input} placeholder='New Todo' /*value={newTitle}*/ /*onChangeText={setNewTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
+            <FormControl errors={getErrors('title')}>
+              <TextInput style={styles.input} placeholder='New Todo' /*value={newTitle}*/ /*onChangeText={setNewTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
+            </FormControl>
+                
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title='Cancel' onPress={closeModal} />
+                      <ButtonComp title={T.todo_screen.buttonCancel} onPress={closeModal} />
                     </View>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title='Create' onPress={() => onSubmit()} />
+                      <ButtonComp title={T.todo_screen.buttonCreate} onPress={() => onSubmit()} />
                     </View>
                   </View>
             </View>         
@@ -184,13 +216,16 @@ const TodoScreen: React.FC = () => {
           <>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
+            <FormControl errors={getErrors('title')}>
               <TextInput style={styles.input} value={field('title').value} /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
+            </FormControl>
+              
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title='Cancel' onPress={closeModal} />
+                      <ButtonComp title={T.todo_screen.buttonCancel} onPress={closeModal} />
                     </View>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title="Editar" onPress={() => onSubmit()} />
+                      <ButtonComp title={T.todo_screen.buttonEdit} onPress={() => onSubmit()} />
                     </View>
                   </View>
             </View>         
@@ -206,10 +241,10 @@ const TodoScreen: React.FC = () => {
               <Text>Quer Apagar o todo: {field('title').value}  ?</Text>
                     <View style={styles.row}>
                       <View style={styles.buttonContainer}>
-                        <ButtonComp title='Cancel' onPress={closeModal} />
+                        <ButtonComp title={T.todo_screen.buttonCancel} onPress={closeModal} />
                       </View>
                       <View style={styles.buttonContainer}>
-                      <ButtonComp title='Apagar' onPress={() => onSubmit()} />
+                      <ButtonComp title={T.todo_screen.buttonDelete} onPress={() => onSubmit()} />
                       </View>
                     </View>
               </View>         

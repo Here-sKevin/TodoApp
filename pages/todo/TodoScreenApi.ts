@@ -3,12 +3,14 @@ import { eq } from "drizzle-orm";
 import { db } from "../../shared/database/hooks/useDb";
 import { todos } from "../../shared/database/schema";
 import { TodoModel } from "./interface/TodoModel";
+import { AuthenticationUser } from "../../shared/authentication/Authentication";
 
 
 class TodoScreenApi {
-    public createTodo(item: TodoModel) {
+    public createTodo(item: TodoModel, user: AuthenticationUser) {
         return db.insert(todos).values({
-            title: item.title
+            title: item.title,
+            userId: user.id
         }).returning();
     }
     public deleteTodo(item: TodoModel) {
@@ -21,7 +23,13 @@ class TodoScreenApi {
         .where(eq(todos.id, item.id))
     }
     public getTodos() {
+        console.log('getTodos');
         return db.select().from(todos)
+    }
+    public getMyTodos(user: AuthenticationUser) {
+        console.log('getMyTodos');
+        console.log('User: ', user);
+        return db.select().from(todos).where(eq(todos.userId, user.id))
     }
 }
 

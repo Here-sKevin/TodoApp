@@ -9,5 +9,6 @@ export const users = sqliteTable("Users", {
 
 export const todos = sqliteTable("Todos", {
     id: integer("id").primaryKey({autoIncrement: true}),
-    title: text("title").notNull()
+    title: text("title").notNull(),
+    userId: integer("userId").notNull()
 })

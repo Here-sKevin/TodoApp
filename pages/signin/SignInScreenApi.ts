@@ -6,7 +6,6 @@ import { db } from '../../shared/database/hooks/useDb';
 
 class SignInScreenApi {
   public signIn(user: LoginModel) {
-    console.log('signIn: ', user)
     return db
     .select()
     .from(users)

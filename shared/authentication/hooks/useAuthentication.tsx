@@ -8,8 +8,8 @@ const useAuthentication = () => {
 
 
 
-  const login = async (username: string, password: string) => {
-    const newUser: AuthenticationUser = new AuthenticationUser(username, password);
+  const login = async (username: string, password: string, id: number) => {
+    const newUser: AuthenticationUser = new AuthenticationUser(username, password, id);
     setUser(newUser); 
   };
 

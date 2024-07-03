@@ -5,11 +5,13 @@ import { object, string } from '@resourge/schema';
 export class RegisterModel {
 	public username: string = '';
 	public password: string = '';
+	public id: number = 0;
 
 	public toModel() {
 		return {
 			username: this.username,
-            password: this.password
+            password: this.password,
+			id: this.id
 			
 		};
 	}

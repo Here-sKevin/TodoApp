@@ -15,7 +15,7 @@ import { ENCRYPTION_KEY } from '../../constants/encryptions';
 const getDatabaseConnection = () => {
   try {
     const opsqlite = open({
-      name: 'home-inventory',
+      name: 'home-db',
       location:
         Platform.OS === 'ios' ? IOS_LIBRARY_PATH : ANDROID_DATABASE_PATH,
       encryptionKey: ENCRYPTION_KEY,
