@@ -30,6 +30,10 @@ const {TranslationInstance, useTranslation} = SetupReactTranslations({
         en: 'Lauch notification',
         pt: 'Lançar notificação',
       },
+      card_title: {
+        en: 'Guide',
+        pt: 'Guia'
+      }
     },
     todo_screen: {
       buttonEdit: {

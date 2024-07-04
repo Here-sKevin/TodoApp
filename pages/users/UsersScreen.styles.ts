@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   item: {
+    flexDirection:'row',
     backgroundColor: 'transparent',
     padding: 20,
     marginVertical: 8,
@@ -15,7 +16,8 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'transparent',
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
   },
   title: {
     fontSize: 20,
@@ -38,15 +40,15 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
-    elevation: 10, // For Android shadow
-    shadowColor: '#000', // For iOS shadow
+    elevation: 10,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -63,4 +65,8 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     width: 300,
   },
+  text: {
+    fontSize: 17,
+    fontWeight: 'bold'
+  }
 });

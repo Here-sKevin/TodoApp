@@ -4,7 +4,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useLayoutEffect, useState } from 'react';
-import {Image, View} from 'react-native';
+import {Image, Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import { useTranslation } from '../../shared/translations/Translations';
 import notifee from '@notifee/react-native';
 import { Button as ButtonComp } from '../../components/ui/Button'
@@ -24,6 +24,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   const {logout, user} = useAuthentication();
   const nav = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
     const changel = language === 'en' ? 'pt' : 'en';
@@ -32,7 +33,6 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
   const redirect = () => {
     logout()
-    //navigation.navigate('SignIn')
   }
 
    const onDisplayNotification = async () => {
@@ -59,11 +59,11 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   useLayoutEffect(() => {
     nav.setOptions({
       headerTitle: 'Home',
-      headerLeft: () => (<Image source={require('../../images/home.png')} />),
+      headerLeft: () => (<Image style={{marginRight: 10}} source={require('../../images/home.png')} />),
       headerRight: () => (
         <>
           <View style={{ paddingRight: 10 }}>
-            <TextComp size='sm'>{T.home_screen.welcome} {user?.username} !</TextComp>
+            <TextComp size='md'>{T.home_screen.welcome} {user?.username} !</TextComp>
           </View>
           <View><ButtonComp title='Logout' size='sm' onPress={redirect} /></View>
         </>
@@ -74,7 +74,89 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nav, isEnabled]);
 
-  return (
+  return(
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={{justifyContent: 'space-between', flex: 1, padding: 5}} horizontal>
+      <View style={{padding:5}}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Todo')}>
+          <Image
+            source={require('../../images/to-do-list.png')}
+            style={styles.buttonImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{padding:5}}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Photo')}>
+          <Image
+            source={require('../../images/gallery.png')}
+            style={styles.buttonImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{padding:5}}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Users')}>
+          <Image
+            source={require('../../images/list.png')}
+            style={styles.buttonImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{padding:5}}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => onDisplayNotification()}>
+          <Image
+            source={require('../../images/notification.png')}
+            style={styles.buttonImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+      
+      
+    </ScrollView>
+    <View style={{width:'30%', }}>
+      <Switch label={language} onValueChange={toggleSwitch} value={isEnabled} />
+    </View>
+    <View style={{marginTop: 150, alignItems: 'center', justifyContent: 'center'}}>
+      <TouchableOpacity style={styles.card} onPress={() => setOpenModal(val => !val)}>
+        <Image source={require('../../images/guide.png')} />
+      </TouchableOpacity>
+
+    </View>
+    {openModal && (
+      <Modal 
+        transparent={false}
+        animationType="slide"
+        visible={openModal}
+        onRequestClose={() => setOpenModal(val => !val)}
+      >
+        <ScrollView style={{padding: 10}}>
+          <Text style={styles.title_guide}>1 - Configuração Inicial e Primeiros Passos [Iniciante]</Text>
+          <Text style={styles.title_guide}>2 - Definir routing [Iniciante]</Text>
+          <Text style={styles.title_guide}>3 - Desenvimento de screen Todo [Iniciante] </Text>
+          <Text style={styles.title_guide}>4 - Desenvolvimento de screen Photos [Intermédio]</Text>
+          <Text style={styles.title_guide}>5 - Authenticação (bd offline) e proteção de routes [Intermédio]</Text>
+          <Text style={styles.title_guide}>6 - Push Notifications (In App) [Intermédio]</Text>
+          <Text style={styles.title_guide}>7 - Geração de APK release para instalar no telemovel</Text>
+
+        </ScrollView>
+        
+        <View style={styles.row}>
+            <View style={styles.buttonContainerCancel}>
+                <ButtonComp title="Close" onPress={() => setOpenModal(val => !val)} />
+            </View>
+        </View>
+
+      </Modal>
+    )}
+
+    </View>
+   
+  )
+
+  /*return (
     <>
 
       <View style={styles.container}>
@@ -97,7 +179,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         </View>
       </View>
     </>
-  );
+  );*/
 };
 
 

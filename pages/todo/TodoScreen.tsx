@@ -160,6 +160,7 @@ const TodoScreen: React.FC = () => {
       </View>
       <SafeAreaView style={styles.container}>
         <FlatList
+          contentContainerStyle={styles.list}
           data={todos}
           renderItem={({item}) => (
             <View style={styles.item}>
