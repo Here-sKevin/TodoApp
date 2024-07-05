@@ -10,5 +10,6 @@ export const users = sqliteTable("Users", {
 export const todos = sqliteTable("Todos", {
     id: integer("id").primaryKey({autoIncrement: true}),
     title: text("title").notNull(),
-    userId: integer("userId").notNull()
+    userId: integer("userId").notNull(),
+    completed: integer("completed", {mode: 'boolean'}).notNull()
 })

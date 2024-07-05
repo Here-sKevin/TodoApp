@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {Image, Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import { useTranslation } from '../../shared/translations/Translations';
 import notifee from '@notifee/react-native';
@@ -13,23 +13,43 @@ import { styles } from './HomeScreen.styles';
 import useAuthentication from '../../shared/authentication/hooks/useAuthentication';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from '../../components/ui/Switch';
+import SelectDropdown from 'react-native-select-dropdown';
 
 type Props = {
   navigation: {
     navigate: Function;
   };
 };
+
+
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const { T, changeLanguage, language } = useTranslation();
   const {logout, user} = useAuthentication();
   const nav = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const toggleSwitch = () => {
+  const [lang, setLang] = useState<string[]>([]);
+  const langDropdownRef = useRef();
+  const selectLang = () => {
     setIsEnabled((previousState) => !previousState);
     const changel = language === 'en' ? 'pt' : 'en';
     changeLanguage(changel);
   } 
+
+
+
+  useEffect(() => {
+    const langArray: string[] = ['en','pt'];
+    setLang(langArray)
+
+    setTimeout(() => {
+      console.log('current: ', langDropdownRef.current)
+      if(langDropdownRef.current) {
+        console.log('Enter current')
+        langDropdownRef.current.selectIndex(0);
+      }
+    }, 50);
+  }, [])
 
   const redirect = () => {
     logout()
@@ -116,9 +136,38 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       
       
     </ScrollView>
-    <View style={{width:'30%', }}>
-      <Switch label={language} onValueChange={toggleSwitch} value={isEnabled} />
+    <View style={styles.selectcontainer}>
+    <View style={{width:200, height: 50 }}>
+      <SelectDropdown
+        ref={langDropdownRef}
+        data={lang}
+        defaultValueByIndex={1}
+        onSelect={(selectedItem, index) => {
+          selectLang();
+        }}
+        renderButton={(l) => {
+          return (
+            <View style={styles.dropdownButtonStyle}>
+              <Text style={styles.dropdownButtonTxtStyle}>{l}</Text>
+            </View>
+          );
+        }}
+        renderItem={(item, index, isSelected) => {
+          return (
+            <View
+              style={{
+                ...styles.dropdownItemStyle,
+                ...(isSelected && {backgroundColor: '#D2D9DF'}),
+              }}>
+              <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
+            </View>
+          );
+        }}
+        dropdownStyle={styles.dropdownMenuStyle}
+      />
     </View>
+    </View>
+    
     <View style={{marginTop: 150, alignItems: 'center', justifyContent: 'center'}}>
       <TouchableOpacity style={styles.card} onPress={() => setOpenModal(val => !val)}>
         <Image source={require('../../images/guide.png')} />

@@ -6,8 +6,6 @@ import { UserType } from "./interface/UsersModel";
 import UsersScreenApi from "./UsersScreenApi";
 import { styles } from "./UsersScreen.styles";
 
-
-
 const UsersScreen: React.FC = () => {
     const [users, setUsers] = useState<UserType[] | []>([]);
 
@@ -15,7 +13,6 @@ const UsersScreen: React.FC = () => {
         
         const fetchData = async () => {
             const udata = await UsersScreenApi.getUsers();
-            console.log('Users: ', udata)
             setUsers(udata);
         }
         fetchData();

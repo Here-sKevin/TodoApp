@@ -1,7 +1,8 @@
 CREATE TABLE `Todos` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`title` text NOT NULL,
-	`userId` integer NOT NULL
+	`userId` integer NOT NULL,
+	`completed` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `Users` (

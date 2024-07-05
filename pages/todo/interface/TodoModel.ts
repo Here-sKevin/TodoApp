@@ -6,11 +6,13 @@ export type TodoType = {
     id: number;
     title: string;
     userId: number;
+    completed: boolean;
 }
 export class TodoModel {
   public id: number = 0;
   public title: string = '';
   public userId: number = 0;
+  public completed: boolean = false;
 
   /*constructor(todo: Todo) {
     this.id = todo.id;

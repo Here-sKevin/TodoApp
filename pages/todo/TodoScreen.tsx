@@ -131,6 +131,16 @@ const TodoScreen: React.FC = () => {
     }
   }
 
+  const handleCompleted = async (data: TodoModel) => {
+    let d;
+    await TodoScreenApi.setCompleted(data);
+    if(!isChecked)
+      d = await TodoScreenApi.getTodos();
+   else
+      d = await TodoScreenApi.getMyTodos(user);
+   setTodos(d);
+  }
+
   /*if(loading){
     return(
       <>
@@ -165,7 +175,21 @@ const TodoScreen: React.FC = () => {
           renderItem={({item}) => (
             <View style={styles.item}>
                 <>
-                  <TextComp style={styles.title} size='lg'>{item.title}</TextComp>
+                <View style={styles.row}>
+                <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+                  <TextComp style={styles.title} size='lg'>   {item.title}  </TextComp>
+                </View>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <Checkbox 
+                      label={' '}
+                      onValueChange={() => handleCompleted(item)}
+                      value={item.completed} 
+                      isDisabled={item.userId === user.id ? false : true}
+                    />
+                </View>
+                    
+                </View>
+                  
                   <View>
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>

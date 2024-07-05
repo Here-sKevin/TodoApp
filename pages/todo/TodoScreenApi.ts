@@ -10,7 +10,8 @@ class TodoScreenApi {
     public createTodo(item: TodoModel, user: AuthenticationUser) {
         return db.insert(todos).values({
             title: item.title,
-            userId: user.id
+            userId: user.id,
+            completed: false
         }).returning();
     }
     public deleteTodo(item: TodoModel) {
@@ -30,6 +31,12 @@ class TodoScreenApi {
         console.log('getMyTodos');
         console.log('User: ', user);
         return db.select().from(todos).where(eq(todos.userId, user.id))
+    }
+    public setCompleted(item: TodoModel) {
+        return db.update(todos).set({
+            completed: !item.completed
+        })
+        .where(eq(todos.id, item.id))
     }
 }
 
