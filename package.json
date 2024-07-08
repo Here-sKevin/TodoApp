@@ -28,6 +28,7 @@
     "pod-install": "^0.2.2",
     "react": "18.2.0",
     "react-native": "0.74.2",
+    "react-native-bootsplash": "^5.5.3",
     "react-native-camera-kit": "^13.0.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",

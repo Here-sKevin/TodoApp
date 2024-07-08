@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import HomeScreen from './pages/home/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,6 +16,7 @@ import TodoScreen from './pages/todo/TodoScreen';
 import PhotoScreen from './pages/photo/PhotoScreen';
 import { UserProvider } from './shared/context/UserContext';
 import UsersScreen from './pages/users/UsersScreen';
+import RNBootSplash  from "react-native-bootsplash";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,8 +45,20 @@ const StackNav = () => {
 
 const App: React.FC = () => {
   const { theme } = useTheme();
+
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await RNBootSplash.hide({ fade: true, duration: 500 });
+      console.log("BootSplash has been hidden successfully");
+    });
+  }, []);
   
   return (
+    
     <Suspense fallback={<>
       <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
         <ActivityIndicator />
@@ -55,7 +68,11 @@ const App: React.FC = () => {
         <UserProvider>
           <Translations>
             <DatabaseProvider>
-              <NavigationContainer>
+              <NavigationContainer
+                /*onReady={() => {
+                  BootSplash.hide();
+                }}*/
+              >
                 <Tab.Navigator screenOptions={{ headerShown: false }}>
                   <Tab.Screen
                     name="Tab"
