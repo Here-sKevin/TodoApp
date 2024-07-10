@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     margin: 10,
+    padding: 10
   },
   buttonContainer: {
     flex: 1,
@@ -25,8 +26,10 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   imageWrapper: {
-    flex: 1,
-    margin: 2,
+    //flex: 1,
+    //justifyContent: 'space-around',
+    margin: 2
+    //padding:2
   },
   image: {
     width: (Dimensions.get('window').width - (3 + 1) * 2) / 3,

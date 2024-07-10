@@ -22,6 +22,7 @@ const defaultStyles = (theme: AppTheme) => ({
     rightSlot: {
       backgroundColor: 'transparent',
       marginLeft: theme.paddings.iconPadding
+      
     }
   }),
 
@@ -71,6 +72,9 @@ const defaultStyles = (theme: AppTheme) => ({
       },
       destructive: {
         backgroundColor: theme.colors.app.destructive
+      },
+      approved: {
+        backgroundColor: 'lightgreen'
       }
     }),
     text: StyleSheet.create({
@@ -84,8 +88,9 @@ const defaultStyles = (theme: AppTheme) => ({
         color: theme.colors.app.foreground
       },
       ghost: {
-        color: theme.colors.app.foreground,
-        textDecorationLine: 'underline'
+        color: 'white',
+        //color: theme.colors.app.foreground,
+        //textDecorationLine: 'underline'
       },
       destructive: {
         color: theme.colors.app.destructiveForeground

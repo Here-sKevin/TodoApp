@@ -66,6 +66,10 @@ const {TranslationInstance, useTranslation} = SetupReactTranslations({
         en: 'Close Camera',
         pt: 'Fechar Camera'
       },
+      buttonDelete: {
+        en:'Delete',
+        pt:'Apagar'
+      }
     }
   }, 
 });

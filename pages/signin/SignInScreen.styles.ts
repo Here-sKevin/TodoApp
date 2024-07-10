@@ -34,7 +34,8 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingBottom: 40
   },
   image: {
     height: 150,

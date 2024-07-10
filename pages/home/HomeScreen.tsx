@@ -1,19 +1,21 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import {Image, Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {ActivityIndicator, Image, Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import { useTranslation } from '../../shared/translations/Translations';
 import notifee from '@notifee/react-native';
 import { Button as ButtonComp } from '../../components/ui/Button'
 import { Text as TextComp } from '../../components/ui/Text'
 import { styles } from './HomeScreen.styles';
 import useAuthentication from '../../shared/authentication/hooks/useAuthentication';
-import { useNavigation } from '@react-navigation/native';
-import { Switch } from '../../components/ui/Switch';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SelectDropdown from 'react-native-select-dropdown';
+import BaseLayout from '../../components/layout/baseLayout/BaseLayout';
+import ButtonContainer from '../../components/ui/ButtonContainer';
+import ProgressCard from '../../components/progressCard/ProgressCard';
+import PhotoInfoCard from '../../components/photoInfoCard/PhotoInfoCard';
+import RNFS from 'react-native-fs';
+import TodoScreenApi from '../todo/TodoScreenApi';
 
 type Props = {
   navigation: {
@@ -30,25 +32,70 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [lang, setLang] = useState<string[]>([]);
   const langDropdownRef = useRef();
-  const selectLang = () => {
+  const [photos, setPhotos] = useState(0)
+
+  const [progress, setProgress] = useState(0);
+  const [todosCompleted, setTodosCompleted] = useState(false);
+  const [todos, setTodos] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const selectLang = (index: number) => {
     setIsEnabled((previousState) => !previousState);
-    const changel = language === 'en' ? 'pt' : 'en';
+    const changel = index === 1 ? 'pt' : 'en';
     changeLanguage(changel);
   } 
 
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+            const data = await TodoScreenApi.getMyTodos(user); 
+            console.log('Data: ', data.length)
+            const dataCompleted = await TodoScreenApi.getMyTodosCompleted(user);
+            console.log('DataCompleted: ', dataCompleted.length)
+            setTodos(data)
+            setTodosCompleted(dataCompleted)
+            const percent = Number(dataCompleted.length) / Number(data.length);
+            console.log('Percent: ', percent)
+            setProgress(percent)
+            setPhotos(0);
+            RNFS.readDir("file:///data/data/com.awesomeproject/cache/")
+            .then((result) => {
+                result.forEach((item) =>{
+                const format = item.path.slice(-4);
+                if(format === '.jpg' ){
+                    setPhotos(prev => prev+1)
+                }
+                })
+            })
+            .catch((err) => {
+                console.log(err.message, err.code);
+            });
+            setLoading(false)
+      };
+      setLoading(true)
+      fetchData();
+      setTimeout(() => {
+        if(langDropdownRef.current) {
+          langDropdownRef.current.selectIndex(language === 'en' ? 0 : 1);
+        }
+      }, 100);
+      
+      return () => {
+        console.log('Screen unfocused');
+      };
+    }, [])
+  );
 
 
   useEffect(() => {
-    const langArray: string[] = ['en','pt'];
+    const langArray: string[] = [require('../../images/england.png'), require('../../images/portugal.png')];
     setLang(langArray)
 
     setTimeout(() => {
-      console.log('current: ', langDropdownRef.current)
       if(langDropdownRef.current) {
-        console.log('Enter current')
-        langDropdownRef.current.selectIndex(0);
+        langDropdownRef.current.selectIndex(language === 'en' ? 0 : 1);
       }
-    }, 50);
+    }, 100);
   }, [])
 
   const redirect = () => {
@@ -79,11 +126,13 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   useLayoutEffect(() => {
     nav.setOptions({
       headerTitle: 'Home',
+      // eslint-disable-next-line react/no-unstable-nested-components
       headerLeft: () => (<Image style={{marginRight: 10}} source={require('../../images/home.png')} />),
+      // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => (
         <>
           <View style={{ paddingRight: 10 }}>
-            <TextComp size='md'>{T.home_screen.welcome} {user?.username} !</TextComp>
+            <TextComp size='md'>{T.home_screen.welcome} {user?.username}!</TextComp>
           </View>
           <View><ButtonComp title='Logout' size='sm' onPress={redirect} /></View>
         </>
@@ -94,141 +143,134 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nav, isEnabled]);
 
+  if(loading)
+    return <ActivityIndicator />
+
   return(
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{justifyContent: 'space-between', flex: 1, padding: 5}} horizontal>
-      <View style={{padding:5}}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Todo')}>
-          <Image
-            source={require('../../images/to-do-list.png')}
-            style={styles.buttonImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={{padding:5}}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Photo')}>
-          <Image
-            source={require('../../images/gallery.png')}
-            style={styles.buttonImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={{padding:5}}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Users')}>
-          <Image
-            source={require('../../images/list.png')}
-            style={styles.buttonImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={{padding:5}}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => onDisplayNotification()}>
-          <Image
-            source={require('../../images/notification.png')}
-            style={styles.buttonImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
+    <BaseLayout>
+        <View style={styles.container}>
+          <ButtonContainer>
+          <View style={{padding:5}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Todo')}>
+              <Image
+                source={require('../../images/to-do-list.png')}
+                style={styles.buttonImage}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{padding:5}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Photo')}>
+              <Image
+                source={require('../../images/gallery.png')}
+                style={styles.buttonImage}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{padding:5}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Users')}>
+              <Image
+                source={require('../../images/list.png')}
+                style={styles.buttonImage}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{padding:5}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => onDisplayNotification()}>
+              <Image
+                source={require('../../images/notification.png')}
+                style={styles.buttonImage}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.selectcontainer}>
+            <View style={{width:70, height: 50 }}>
+              <SelectDropdown
+                ref={langDropdownRef}
+                data={lang}
+                //defaultValueByIndex={1}
+                onSelect={(selectedItem, index) => {
+                  selectLang(index);
+                }}
+                renderButton={(l) => {
+                  return (
+                    <View style={styles.dropdownButtonStyle}>
+                      <Image source={l} />
+                    </View>
+                  );
+                }}
+                renderItem={(item, index, isSelected) => {
+                  return (
+                    <View
+                      style={{
+                        ...styles.dropdownItemStyle,
+                        ...(isSelected && {backgroundColor: 'white'}),
+                      }}>
+                      <Image source={item} />
+                    </View>
+                  );
+                }}
+                dropdownStyle={styles.dropdownMenuStyle}
+
+              />
+            </View>
+          </View>
+           
+          </ButtonContainer>
+          <View style={{height:40}} />
+          <ProgressCard progress={progress} todosCompleted={todosCompleted} todos={todos} />
+          <View style={{height:40}} />
+          <PhotoInfoCard photo={photos} />
       
       
-    </ScrollView>
-    <View style={styles.selectcontainer}>
-    <View style={{width:200, height: 50 }}>
-      <SelectDropdown
-        ref={langDropdownRef}
-        data={lang}
-        defaultValueByIndex={1}
-        onSelect={(selectedItem, index) => {
-          selectLang();
-        }}
-        renderButton={(l) => {
-          return (
-            <View style={styles.dropdownButtonStyle}>
-              <Text style={styles.dropdownButtonTxtStyle}>{l}</Text>
-            </View>
-          );
-        }}
-        renderItem={(item, index, isSelected) => {
-          return (
-            <View
-              style={{
-                ...styles.dropdownItemStyle,
-                ...(isSelected && {backgroundColor: '#D2D9DF'}),
-              }}>
-              <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
-            </View>
-          );
-        }}
-        dropdownStyle={styles.dropdownMenuStyle}
-      />
-    </View>
-    </View>
+      {/*<View style={{marginTop: 150, alignItems: 'center', justifyContent: 'center'}}>
+        <TouchableOpacity style={styles.card} onPress={() => setOpenModal(val => !val)}>
+          <Image source={require('../../images/guide.png')} />
+        </TouchableOpacity>
+      </View>*/}
+      
+      {openModal && (
+        <Modal 
+          transparent={false}
+          animationType="slide"
+          visible={openModal}
+          onRequestClose={() => setOpenModal(val => !val)}
+        >
+          <ScrollView style={{padding: 10}}>
+            <Text style={styles.title_guide}>React Native CLI</Text>
+            <Text style={styles.title_guide}>React-navigation</Text>
+            <Text style={styles.title_guide}>Resouge react-form </Text>
+            <Text style={styles.title_guide}>Resouge react-translations</Text>
+            <Text style={styles.title_guide}>Resouge react-schema</Text>
+            <Text style={styles.title_guide}>React-native-camera-kit</Text>
+            <Text style={styles.title_guide}>React-native-fs</Text>
+            <Text style={styles.title_guide}>Notifee</Text>
+            <Text style={styles.title_guide}>Op-SQLite</Text>
+            <Text style={styles.title_guide}>Drizzle ORM</Text>
+            <Text style={styles.title_guide}>React-native-bootsplash</Text>
+            <Text style={styles.title_guide}>React-native-fast-image</Text>
+            <Text style={styles.title_guide}>React-native-image-viewing</Text>
+
+          </ScrollView>
+          
+          <View style={styles.row}>
+              <View style={styles.buttonContainerCancel}>
+                  <ButtonComp title="Close" onPress={() => setOpenModal(val => !val)} />
+              </View>
+          </View>
+
+        </Modal>
+      )}
+
+      </View>
     
-    <View style={{marginTop: 150, alignItems: 'center', justifyContent: 'center'}}>
-      <TouchableOpacity style={styles.card} onPress={() => setOpenModal(val => !val)}>
-        <Image source={require('../../images/guide.png')} />
-      </TouchableOpacity>
+    </BaseLayout>
 
-    </View>
-    {openModal && (
-      <Modal 
-        transparent={false}
-        animationType="slide"
-        visible={openModal}
-        onRequestClose={() => setOpenModal(val => !val)}
-      >
-        <ScrollView style={{padding: 10}}>
-          <Text style={styles.title_guide}>1 - Configuração Inicial e Primeiros Passos [Iniciante]</Text>
-          <Text style={styles.title_guide}>2 - Definir routing [Iniciante]</Text>
-          <Text style={styles.title_guide}>3 - Desenvimento de screen Todo [Iniciante] </Text>
-          <Text style={styles.title_guide}>4 - Desenvolvimento de screen Photos [Intermédio]</Text>
-          <Text style={styles.title_guide}>5 - Authenticação (bd offline) e proteção de routes [Intermédio]</Text>
-          <Text style={styles.title_guide}>6 - Push Notifications (In App) [Intermédio]</Text>
-          <Text style={styles.title_guide}>7 - Geração de APK release para instalar no telemovel</Text>
-
-        </ScrollView>
-        
-        <View style={styles.row}>
-            <View style={styles.buttonContainerCancel}>
-                <ButtonComp title="Close" onPress={() => setOpenModal(val => !val)} />
-            </View>
-        </View>
-
-      </Modal>
-    )}
-
-    </View>
    
   )
-
-  /*return (
-    <>
-
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
-          <View style={{width:'30%', }}><Switch label={language} onValueChange={toggleSwitch} value={isEnabled} /></View>              
-              <ButtonComp
-                title={T.home_screen.buttonTodo}
-                size='md'
-                //variant='outline'
-                onPress={() => navigation.navigate('Todo')}
-              />
-              <ButtonComp
-                title={T.home_screen.buttonPhoto}
-                size='md'
-                //variant='outline'
-                onPress={() => navigation.navigate('Photo')}
-              />
-              <ButtonComp title={T.home_screen.buttonList} size='md' onPress={() => navigation.navigate('Users')}/>
-              <ButtonComp title={T.home_screen.buttonnotification} size='md' onPress={() => onDisplayNotification()} />
-        </View>
-      </View>
-    </>
-  );*/
 };
 
 

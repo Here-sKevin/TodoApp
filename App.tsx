@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import HomeScreen from './pages/home/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,7 +16,7 @@ import TodoScreen from './pages/todo/TodoScreen';
 import PhotoScreen from './pages/photo/PhotoScreen';
 import { UserProvider } from './shared/context/UserContext';
 import UsersScreen from './pages/users/UsersScreen';
-import RNBootSplash  from "react-native-bootsplash";
+import LoginRegister from './pages/loginRegister/LoginRegister';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,9 +34,9 @@ const StackNav = () => {
         </>
       ) : (
         <>
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="SignIn/SignUp" component={LoginRegister} />
         </>
+        
       )}
     </Stack.Navigator>
   );
@@ -45,17 +45,6 @@ const StackNav = () => {
 
 const App: React.FC = () => {
   const { theme } = useTheme();
-
-  useEffect(() => {
-    const init = async () => {
-      // …do multiple sync or async tasks
-    };
-
-    init().finally(async () => {
-      await RNBootSplash.hide({ fade: true, duration: 500 });
-      console.log("BootSplash has been hidden successfully");
-    });
-  }, []);
   
   return (
     
@@ -68,11 +57,7 @@ const App: React.FC = () => {
         <UserProvider>
           <Translations>
             <DatabaseProvider>
-              <NavigationContainer
-                /*onReady={() => {
-                  BootSplash.hide();
-                }}*/
-              >
+              <NavigationContainer>
                 <Tab.Navigator screenOptions={{ headerShown: false }}>
                   <Tab.Screen
                     name="Tab"

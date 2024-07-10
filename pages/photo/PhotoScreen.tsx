@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {ActivityIndicator, FlatList, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, FlatList, Image, TouchableOpacity, View} from 'react-native';
 import { CameraScreen } from 'react-native-camera-kit';
 import { Button as ButtonComp } from '../../components/ui/Button'
 import RNFS from 'react-native-fs';
@@ -31,7 +31,6 @@ const PhotoScreen: React.FC = () => {
     }
     if(ev.type === 'capture') {
       captureImage();
-      console.log('Enter capture')
     }
   }
 
@@ -46,14 +45,25 @@ const PhotoScreen: React.FC = () => {
           }
         })
         setLoading(false)
+        setIsVisible(false)
       })
       .catch((err) => {
         console.log(err.message, err.code);
       });
   }
 
+  const handleDeletePhoto = async (fileIndex: number) => {
+      const  path = images[fileIndex].uri;
+      return RNFS.unlink(path)
+      .then(async () => {
+        await captureImage()
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
   const SelectImage = (index: number) =>{
-    console.log('Image Index: ', index)
     setImageIndex(index)
     setIsVisible(true)
   }
@@ -74,6 +84,10 @@ const PhotoScreen: React.FC = () => {
         console.log(err.message, err.code);
       });
   },[])
+
+  const handleIndexChange = () => {
+    setImageIndex(val => val +1)
+  }
 
   if(loading) {
     return(
@@ -106,10 +120,16 @@ const PhotoScreen: React.FC = () => {
             <ImageView
               images={images}
               imageIndex={currentImageIndex}
+              //onImageIndexChange={handleIndexChange}
               visible={visible}
               onRequestClose={() => setIsVisible(false)} 
+              FooterComponent={() => (
+                <ButtonComp title={T.photo_screen.buttonDelete} rightSlot={<Image source={require('../../images/delete.png')}/>} variant='ghost' onPress={() => handleDeletePhoto(currentImageIndex)} />
+              )}
             />
+            
             <FlatList
+              //contentContainerStyle={{gap: 5, display:'flex'}}
               data={images}
               renderItem={({item, index}) => (
                 <View style={styles.imageWrapper}>
@@ -125,6 +145,7 @@ const PhotoScreen: React.FC = () => {
               )} 
               keyExtractor={(item, index) => index.toString()}
               numColumns={3}
+              //columnWrapperStyle={{}}
               style={styles.imageContainer}
             />
             </>

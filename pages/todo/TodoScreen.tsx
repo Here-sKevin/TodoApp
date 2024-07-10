@@ -12,6 +12,8 @@ import { Checkbox } from '../../components/ui/Checkbox';
 import useAuthentication from '../../shared/authentication/hooks/useAuthentication';
 import { useTranslation } from '../../shared/translations/Translations';
 import FormControl from '../../components/ui/FormControl';
+import BaseLayout from '../../components/layout/baseLayout/BaseLayout';
+import TodoCard from '../../components/todoCard/TodoCard';
 
 const TodoScreen: React.FC = () => {
   const { T } = useTranslation();
@@ -34,7 +36,6 @@ const TodoScreen: React.FC = () => {
 
     const fetchData = async () => {
       const tdata = await TodoScreenApi.getMyTodos(user);
-      console.log('Data TODOS: ', tdata)
       setTodos(tdata);
     }
     fetchData();
@@ -66,7 +67,6 @@ const TodoScreen: React.FC = () => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log('Submit')
 		if(modalType === 'create') {
         handleNewTodo(data);
     }
@@ -132,6 +132,7 @@ const TodoScreen: React.FC = () => {
   }
 
   const handleCompleted = async (data: TodoModel) => {
+    console.log('Data: ', data)
     let d;
     await TodoScreenApi.setCompleted(data);
     if(!isChecked)
@@ -152,28 +153,25 @@ const TodoScreen: React.FC = () => {
   } 
   if(error) return <Text>Error Message: {error.message}</Text>*/
   return (
-    <>
+    <BaseLayout>
       <View>
-                  <View style={styles.row}>
-                    <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-                    <Checkbox
-                      label={T.todo_screen.buttonTodos}
-                      onValueChange={toggleCheckbox}
-                      value={isChecked}
-                    />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                      <ButtonComp title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
-                    </View>
-                  </View>
-        
+        <View style={styles.row}>
+          <View style={styles.buttonContainer}>
+            <ButtonComp variant='approved' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
+          </View>
+        </View>
       </View>
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <FlatList
           contentContainerStyle={styles.list}
           data={todos}
           renderItem={({item}) => (
-            <View style={styles.item}>
+            <>
+            <TodoCard openModal={(type, data) => openModal(type,data)} completed={item.completed} onValueChange={() => handleCompleted(item)} title={item.title} itemData={item} />
+            <View style={{height: 5}} />
+            </>
+            
+            /*<View style={item.completed ? styles.approved : styles.item}>
                 <>
                 <View style={styles.row}>
                 <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
@@ -193,10 +191,10 @@ const TodoScreen: React.FC = () => {
                   <View>
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonEdit} size='sm' variant='outline' onPress={() => {openModal('edit', item) }}/>
+                      <ButtonComp isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonEdit} size='sm' onPress={() => {openModal('edit', item) }}/>
                     </View>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonDelete} size='sm' variant='outline' onPress={() => {
+                      <ButtonComp variant='destructive' isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonDelete} size='sm' onPress={() => {
                         openModal('delete', item);
                       }} />
                     </View>
@@ -205,7 +203,7 @@ const TodoScreen: React.FC = () => {
                     
                   </View>
                 </>
-            </View>
+            </View>*/
           )}          
         />
 
@@ -225,10 +223,10 @@ const TodoScreen: React.FC = () => {
                 
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title={T.todo_screen.buttonCancel} onPress={closeModal} />
+                      <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
                     </View>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title={T.todo_screen.buttonCreate} onPress={() => onSubmit()} />
+                      <ButtonComp variant='approved' title={T.todo_screen.buttonCreate} onPress={() => onSubmit()} />
                     </View>
                   </View>
             </View>         
@@ -247,7 +245,7 @@ const TodoScreen: React.FC = () => {
               
                   <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp title={T.todo_screen.buttonCancel} onPress={closeModal} />
+                      <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
                     </View>
                     <View style={styles.buttonContainer}>
                       <ButtonComp title={T.todo_screen.buttonEdit} onPress={() => onSubmit()} />
@@ -266,7 +264,7 @@ const TodoScreen: React.FC = () => {
               <Text>Quer Apagar o todo: {field('title').value}  ?</Text>
                     <View style={styles.row}>
                       <View style={styles.buttonContainer}>
-                        <ButtonComp title={T.todo_screen.buttonCancel} onPress={closeModal} />
+                        <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
                       </View>
                       <View style={styles.buttonContainer}>
                       <ButtonComp title={T.todo_screen.buttonDelete} onPress={() => onSubmit()} />
@@ -277,8 +275,8 @@ const TodoScreen: React.FC = () => {
           </>      
          )}
       </Modal>
-      </SafeAreaView>
-    </>
+      </View>
+    </BaseLayout>
   );
 };
 

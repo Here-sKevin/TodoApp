@@ -15,6 +15,15 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
   },
+  approved: {
+    backgroundColor: 'transparent',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'lightgreen',
+  },
   title: {
     fontSize: 20,
     display: 'flex',

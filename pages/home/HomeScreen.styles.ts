@@ -35,8 +35,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderColor: 'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
-    borderWidth: 2,
+    //borderColor: 'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
+    //borderWidth: 2,
   },
   buttonImage: {
     width: 30,
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
   dropdownButtonStyle: {
     flex: 1,
     height: 50,
-    backgroundColor: '#E9ECEF',
+    backgroundColor: 'white',
     borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   dropdownMenuStyle: {
-    backgroundColor: '#E9ECEF',
+    backgroundColor: 'white',
     borderRadius: 8,
     height: 100,
   },
@@ -109,6 +109,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#B1BDC8',
+    backgroundColor: 'white'
   },
   dropdownItemTxtStyle: {
     flex: 1,

@@ -4,7 +4,6 @@ import { users } from "../../shared/database/schema";
 
 class UsersScreenApi {
   public getUsers() {
-    console.log('Enter get users')
     return db.select().from(users);
   }
 }

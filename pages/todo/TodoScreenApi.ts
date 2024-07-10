@@ -24,13 +24,13 @@ class TodoScreenApi {
         .where(eq(todos.id, item.id))
     }
     public getTodos() {
-        console.log('getTodos');
         return db.select().from(todos)
     }
     public getMyTodos(user: AuthenticationUser) {
-        console.log('getMyTodos');
-        console.log('User: ', user);
         return db.select().from(todos).where(eq(todos.userId, user.id))
+    }
+    public getMyTodosCompleted(user: AuthenticationUser) {
+        return db.select().from(todos).where(eq(todos.userId, user.id) && eq(todos.completed, true))
     }
     public setCompleted(item: TodoModel) {
         return db.update(todos).set({
