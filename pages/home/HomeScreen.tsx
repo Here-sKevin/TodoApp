@@ -12,10 +12,11 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SelectDropdown from 'react-native-select-dropdown';
 import BaseLayout from '../../components/layout/baseLayout/BaseLayout';
 import ButtonContainer from '../../components/ui/ButtonContainer';
-import ProgressCard from '../../components/progressCard/ProgressCard';
+import TaskInfoCard from '../../components/taskInfoCard/TaskInfoCard';
 import PhotoInfoCard from '../../components/photoInfoCard/PhotoInfoCard';
 import RNFS from 'react-native-fs';
 import TodoScreenApi from '../todo/TodoScreenApi';
+import UserHeader from '../../components/userHeader/UserHeader';
 
 type Props = {
   navigation: {
@@ -23,24 +24,20 @@ type Props = {
   };
 };
 
+type ImageType = {
+  uri: string
+}
 
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const { T, changeLanguage, language } = useTranslation();
   const {logout, user} = useAuthentication();
-  const nav = useNavigation();
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [lang, setLang] = useState<string[]>([]);
   const langDropdownRef = useRef();
-  const [photos, setPhotos] = useState(0)
-
-  const [progress, setProgress] = useState(0);
-  const [todosCompleted, setTodosCompleted] = useState(false);
-  const [todos, setTodos] = useState(false);
+  const [photos, setPhotos] = useState<ImageType[]>([])
+  const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const selectLang = (index: number) => {
-    setIsEnabled((previousState) => !previousState);
     const changel = index === 1 ? 'pt' : 'en';
     changeLanguage(changel);
   } 
@@ -50,27 +47,24 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       const fetchData = async () => {
             const data = await TodoScreenApi.getMyTodos(user); 
             console.log('Data: ', data.length)
-            const dataCompleted = await TodoScreenApi.getMyTodosCompleted(user);
-            console.log('DataCompleted: ', dataCompleted.length)
             setTodos(data)
-            setTodosCompleted(dataCompleted)
-            const percent = Number(dataCompleted.length) / Number(data.length);
-            console.log('Percent: ', percent)
-            setProgress(percent)
-            setPhotos(0);
+            setPhotos([]);
             RNFS.readDir("file:///data/data/com.awesomeproject/cache/")
             .then((result) => {
                 result.forEach((item) =>{
                 const format = item.path.slice(-4);
                 if(format === '.jpg' ){
-                    setPhotos(prev => prev+1)
+                  const tdata = 'file://'+item.path;
+                  setPhotos(prev => [...prev, tdata])
                 }
                 })
             })
             .catch((err) => {
                 console.log(err.message, err.code);
+            })
+            .finally(() => {
+              setLoading(false);
             });
-            setLoading(false)
       };
       setLoading(true)
       fetchData();
@@ -90,6 +84,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     const langArray: string[] = [require('../../images/england.png'), require('../../images/portugal.png')];
     setLang(langArray)
+    
 
     setTimeout(() => {
       if(langDropdownRef.current) {
@@ -123,153 +118,52 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     });
   }
 
-  useLayoutEffect(() => {
-    nav.setOptions({
-      headerTitle: 'Home',
-      // eslint-disable-next-line react/no-unstable-nested-components
-      headerLeft: () => (<Image style={{marginRight: 10}} source={require('../../images/home.png')} />),
-      // eslint-disable-next-line react/no-unstable-nested-components
-      headerRight: () => (
-        <>
-          <View style={{ paddingRight: 10 }}>
-            <TextComp size='md'>{T.home_screen.welcome} {user?.username}!</TextComp>
-          </View>
-          <View><ButtonComp title='Logout' size='sm' onPress={redirect} /></View>
-        </>
-        
-      ),
-      
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nav, isEnabled]);
-
   if(loading)
     return <ActivityIndicator />
 
   return(
     <BaseLayout>
         <View style={styles.container}>
+          <UserHeader username={user?.username} onDisplayNotification={() => onDisplayNotification()} />
           <ButtonContainer>
-          <View style={{padding:5}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Todo')}>
-              <Image
-                source={require('../../images/to-do-list.png')}
-                style={styles.buttonImage}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{padding:5}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Photo')}>
-              <Image
-                source={require('../../images/gallery.png')}
-                style={styles.buttonImage}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{padding:5}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Users')}>
-              <Image
-                source={require('../../images/list.png')}
-                style={styles.buttonImage}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{padding:5}}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => onDisplayNotification()}>
-              <Image
-                source={require('../../images/notification.png')}
-                style={styles.buttonImage}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.selectcontainer}>
-            <View style={{width:70, height: 50 }}>
-              <SelectDropdown
-                ref={langDropdownRef}
-                data={lang}
-                //defaultValueByIndex={1}
-                onSelect={(selectedItem, index) => {
-                  selectLang(index);
-                }}
-                renderButton={(l) => {
-                  return (
-                    <View style={styles.dropdownButtonStyle}>
-                      <Image source={l} />
-                    </View>
-                  );
-                }}
-                renderItem={(item, index, isSelected) => {
-                  return (
-                    <View
-                      style={{
-                        ...styles.dropdownItemStyle,
-                        ...(isSelected && {backgroundColor: 'white'}),
-                      }}>
-                      <Image source={item} />
-                    </View>
-                  );
-                }}
-                dropdownStyle={styles.dropdownMenuStyle}
-
-              />
+            <View style={styles.selectcontainer}>
+              <View style={{width:70, height: 50 }}>
+                <SelectDropdown
+                  ref={langDropdownRef}
+                  data={lang}
+                  //defaultValueByIndex={1}
+                  onSelect={(selectedItem, index) => {
+                    selectLang(index);
+                  }}
+                  renderButton={(l) => {
+                    return (
+                      <View style={styles.dropdownButtonStyle}>
+                        <Image source={l} />
+                      </View>
+                    );
+                  }}
+                  renderItem={(item, index, isSelected) => {
+                    return (
+                      <View
+                        style={{
+                          ...styles.dropdownItemStyle,
+                          ...(isSelected && {backgroundColor: 'white'}),
+                        }}>
+                        <Image source={item} />
+                      </View>
+                    );
+                  }}
+                  dropdownStyle={styles.dropdownMenuStyle}
+                />
+              </View>
             </View>
-          </View>
-           
           </ButtonContainer>
           <View style={{height:40}} />
-          <ProgressCard progress={progress} todosCompleted={todosCompleted} todos={todos} />
+          <TaskInfoCard todos={todos} goTodo={() => navigation.navigate('Todo')} />
           <View style={{height:40}} />
-          <PhotoInfoCard photo={photos} />
-      
-      
-      {/*<View style={{marginTop: 150, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity style={styles.card} onPress={() => setOpenModal(val => !val)}>
-          <Image source={require('../../images/guide.png')} />
-        </TouchableOpacity>
-      </View>*/}
-      
-      {openModal && (
-        <Modal 
-          transparent={false}
-          animationType="slide"
-          visible={openModal}
-          onRequestClose={() => setOpenModal(val => !val)}
-        >
-          <ScrollView style={{padding: 10}}>
-            <Text style={styles.title_guide}>React Native CLI</Text>
-            <Text style={styles.title_guide}>React-navigation</Text>
-            <Text style={styles.title_guide}>Resouge react-form </Text>
-            <Text style={styles.title_guide}>Resouge react-translations</Text>
-            <Text style={styles.title_guide}>Resouge react-schema</Text>
-            <Text style={styles.title_guide}>React-native-camera-kit</Text>
-            <Text style={styles.title_guide}>React-native-fs</Text>
-            <Text style={styles.title_guide}>Notifee</Text>
-            <Text style={styles.title_guide}>Op-SQLite</Text>
-            <Text style={styles.title_guide}>Drizzle ORM</Text>
-            <Text style={styles.title_guide}>React-native-bootsplash</Text>
-            <Text style={styles.title_guide}>React-native-fast-image</Text>
-            <Text style={styles.title_guide}>React-native-image-viewing</Text>
-
-          </ScrollView>
-          
-          <View style={styles.row}>
-              <View style={styles.buttonContainerCancel}>
-                  <ButtonComp title="Close" onPress={() => setOpenModal(val => !val)} />
-              </View>
-          </View>
-
-        </Modal>
-      )}
-
-      </View>
-    
+          <PhotoInfoCard photo={photos} goPhoto={() => navigation.navigate('Photo')}/>
+        </View>
     </BaseLayout>
-
-   
   )
 };
 

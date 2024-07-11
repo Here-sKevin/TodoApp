@@ -40,6 +40,10 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     margin: 10,
+    flexDirection: 'row',
+    //justifyContent: 'space-between',
+    alignItems: 'center',
+
   },
   modalContainer: {
     flex: 1,
@@ -72,5 +76,13 @@ export const styles = StyleSheet.create({
   },
   list: {
     paddingBottom: 100
-  }
+  },
+  stickyFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 20,
+    alignItems: 'center',
+  },
 });

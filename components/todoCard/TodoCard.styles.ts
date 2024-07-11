@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         //flex: 1,
         justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor:'#E5E5E5',
+        //width: '100%',
+        backgroundColor:'#F4F4F4',
         padding:20,
         borderRadius: 10,
     },
@@ -22,13 +22,22 @@ export const styles = StyleSheet.create({
         borderTopStartRadius: 10
     },
     imageContainer: {
-        flex:0.4,
+        /*flex:0.3,
         alignItems:'center',
-        padding: 10,
+        //padding: 10,
         justifyContent: 'space-around',
         backgroundColor: 'white',
         borderRadius: 100,
-        //height: 40
+        height: 40,*/
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor:'white',
+        borderRadius: 10,
+        height:40,
+        marginTop: 15,
+        paddingHorizontal: 10
+        
     },
       textContainer: {
         flex:1,
@@ -51,5 +60,9 @@ export const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent: 'center',
         padding: 10
+      },
+      image: {
+        //width: 30,
+        //height: 30
       }
 })

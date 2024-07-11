@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 const StackNav = () => {
   const { isAuthenticated } = useAuthentication();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Home" component={HomeScreen} />
@@ -63,6 +63,7 @@ const App: React.FC = () => {
                     name="Tab"
                     component={StackNav}
                     options={{ 
+                      tabBarStyle: {display: 'none'},
                       tabBarLabel: 'Home', 
                       tabBarIcon: () => <Image source={require('./images/home.png')} /> }}
                   />

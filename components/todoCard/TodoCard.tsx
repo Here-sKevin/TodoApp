@@ -19,7 +19,7 @@ const TodoCard = ({completed, onValueChange, title, itemData, openModal}) => {
         <View>
             <TouchableOpacity style={collapsed ? styles.container : styles.containerCollapse} onPress={toggleCollapsed}>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../../images/to-do-list.png')} />
+                    <Image style={styles.image} source={require('../../images/to-do-list.png')} />
                 </View>
                 <View style={styles.textContainer}>
                     <Text fontWeight="bold" size="md">{title}</Text>

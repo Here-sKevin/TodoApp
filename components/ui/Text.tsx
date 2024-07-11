@@ -5,6 +5,15 @@ import {AppTheme} from '../../styles/theme';
 import {FC, ReactNode} from 'react';
 
 const defaultStyles = (theme: AppTheme) => ({
+  fontFam: StyleSheet.create({
+    title: {
+      fontFamily: 'helvetica'
+    },
+    description: {
+      fontFamily: 'calibri'
+    },
+
+  }),
   colors: StyleSheet.create({
     primary: {
       color: theme.colors.app.foreground
@@ -84,6 +93,8 @@ interface ITextProps extends TextProps {
    */
   fontWeight?: keyof ReturnType<typeof defaultStyles>['fontWeights'];
 
+  fontFam?: keyof ReturnType<typeof defaultStyles>['fontFam'];
+
   children: ReactNode;
 }
 
@@ -93,6 +104,7 @@ const Text: FC<ITextProps> = ({
   color = 'primary',
   size = 'md',
   fontWeight = 'regular',
+  fontFam = 'description',
   ...otherProps
 }) => {
   const styles = useStyles(defaultStyles);
@@ -103,6 +115,7 @@ const Text: FC<ITextProps> = ({
         styles.colors[color],
         styles.sizes[size],
         styles.fontWeights[fontWeight],
+        styles.fontFam[fontFam],
         style
       ]}
       {...otherProps}

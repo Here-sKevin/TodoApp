@@ -9,11 +9,11 @@ type Props = {
 }
 const FormControl: React.FC<Props> = ({ children, errors }: Props) => {
   return (
-    <View style={{width:'95%', alignItems: 'center'}}>
+    <View style={{width:'100%'}}>
       {children}
       {errors ? (
         Array.from(new Set(errors).values()).map((error) => (
-          <Text style={{color: 'red'}}>
+          <Text style={{color: 'red', justifyContent: 'flex-start', fontSize: 12, paddingVertical:10, padding:5}}>
             {error}
           </Text>
         ))

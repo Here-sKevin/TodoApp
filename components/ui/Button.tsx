@@ -27,6 +27,10 @@ const defaultStyles = (theme: AppTheme) => ({
   }),
 
   sizes: StyleSheet.create({
+    xs: {
+      paddingVertical: 7,
+      paddingHorizontal: 9
+    },
     sm: {
       paddingVertical: 10,
       paddingHorizontal: 12
@@ -88,7 +92,8 @@ const defaultStyles = (theme: AppTheme) => ({
         color: theme.colors.app.foreground
       },
       ghost: {
-        color: 'white',
+        color: 'black',
+        fontWeight: 700
         //color: theme.colors.app.foreground,
         //textDecorationLine: 'underline'
       },

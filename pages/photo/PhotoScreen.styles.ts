@@ -3,14 +3,17 @@ import { Dimensions, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    //flexDirection: 'row',
+    //justifyContent: 'space-around',
     margin: 10,
     padding: 10
   },
   buttonContainer: {
-    flex: 1,
+    //flex: 1,
     margin: 10,
+    //width:'15%',
+    flexDirection:'row',
+    alignItems:'center'
   },
   root: { flexGrow: 0 },
   container: {
@@ -34,5 +37,13 @@ export const styles = StyleSheet.create({
   image: {
     width: (Dimensions.get('window').width - (3 + 1) * 2) / 3,
     height: (Dimensions.get('window').width - (3 + 1) * 2) / 3,
+  },
+  stickyFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 20,
+    alignItems: 'center',
   },
 });

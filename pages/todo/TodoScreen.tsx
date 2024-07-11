@@ -1,27 +1,26 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import {ActivityIndicator, Alert, FlatList, Modal, SafeAreaView, Text, TextInput, View} from 'react-native';
-//import useFetch from '../shared/hooks/useFetch';
+import {Alert, FlatList, Modal, Text, TextInput, View} from 'react-native';
 import { TodoModel, TodoType, useTodoModel } from './interface/TodoModel';
 import { Button as ButtonComp } from '../../components/ui/Button'
 import { Text as TextComp } from '../../components/ui/Text'
 import { styles } from './TodoScreen.styles';
 import TodoScreenApi from './TodoScreenApi';
-import { Checkbox } from '../../components/ui/Checkbox';
 import useAuthentication from '../../shared/authentication/hooks/useAuthentication';
 import { useTranslation } from '../../shared/translations/Translations';
 import FormControl from '../../components/ui/FormControl';
 import BaseLayout from '../../components/layout/baseLayout/BaseLayout';
 import TodoCard from '../../components/todoCard/TodoCard';
+import { useNavigation } from '@react-navigation/native';
 
 const TodoScreen: React.FC = () => {
   const { T } = useTranslation();
   const [todos, setTodos] = useState<TodoModel[] | []>([]);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'delete' | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  //const {data, loading, error} = useFetch<TodoType[]>('https://jsonplaceholder.typicode.com/todos');
   const [isChecked, setIsChecked] = useState(true);
+  const navigation = useNavigation();
   
   const {
 		field,
@@ -41,17 +40,6 @@ const TodoScreen: React.FC = () => {
     fetchData();
 
   }, []);
-
-  const toggleCheckbox = async () => {
-    let tdata;
-    if(!isChecked)
-      tdata = await TodoScreenApi.getMyTodos(user)
-    else
-      tdata = await TodoScreenApi.getTodos()
-
-    setTodos(tdata);
-    setIsChecked((previousState) => !previousState);
-  } 
 
   const openModal = (type: 'create' | 'edit' | 'delete', item: TodoType | null) => {
     if(item != null) {
@@ -157,7 +145,9 @@ const TodoScreen: React.FC = () => {
       <View>
         <View style={styles.row}>
           <View style={styles.buttonContainer}>
-            <ButtonComp variant='approved' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
+            <ButtonComp title='<' variant='outline' size='lg' onPress={() => navigation.navigate('Home')}/>
+              <View style={{width:80}} />
+              <TextComp size='xl' fontFam='title' fontWeight='bold'>Task List</TextComp>
           </View>
         </View>
       </View>
@@ -170,40 +160,6 @@ const TodoScreen: React.FC = () => {
             <TodoCard openModal={(type, data) => openModal(type,data)} completed={item.completed} onValueChange={() => handleCompleted(item)} title={item.title} itemData={item} />
             <View style={{height: 5}} />
             </>
-            
-            /*<View style={item.completed ? styles.approved : styles.item}>
-                <>
-                <View style={styles.row}>
-                <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-                  <TextComp style={styles.title} size='lg'>   {item.title}  </TextComp>
-                </View>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Checkbox 
-                      label={' '}
-                      onValueChange={() => handleCompleted(item)}
-                      value={item.completed} 
-                      isDisabled={item.userId === user.id ? false : true}
-                    />
-                </View>
-                    
-                </View>
-                  
-                  <View>
-                  <View style={styles.row}>
-                    <View style={styles.buttonContainer}>
-                      <ButtonComp isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonEdit} size='sm' onPress={() => {openModal('edit', item) }}/>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                      <ButtonComp variant='destructive' isDisabled={item.userId === user.id ? false : true} title={T.todo_screen.buttonDelete} size='sm' onPress={() => {
-                        openModal('delete', item);
-                      }} />
-                    </View>
-                  </View>
-                    
-                    
-                  </View>
-                </>
-            </View>*/
           )}          
         />
 
@@ -275,6 +231,9 @@ const TodoScreen: React.FC = () => {
           </>      
          )}
       </Modal>
+      </View>
+      <View style={styles.stickyFooter}>
+        <ButtonComp shape='circle' variant='approved' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
       </View>
     </BaseLayout>
   );

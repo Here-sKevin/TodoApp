@@ -11,6 +11,9 @@ import React, { useEffect, useState } from 'react';
 import { styles } from './PhotoScreen.styles';
 import { useTranslation } from '../../shared/translations/Translations';
 import FastImage from 'react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
+import BaseLayout from '../../components/layout/baseLayout/BaseLayout';
+import { Text as TextComp } from '../../components/ui/Text'
 
 type ImageType = {
   uri: string
@@ -22,6 +25,7 @@ const PhotoScreen: React.FC = () => {
   const [visible, setIsVisible] = useState<boolean>(false);
   const [currentImageIndex, setImageIndex] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   const {T} = useTranslation()
 
@@ -98,7 +102,7 @@ const PhotoScreen: React.FC = () => {
   }
 
   return (
-    <>
+    <BaseLayout>
 
       <View style={{flex: 1}}>
         {cameraOpen && (
@@ -111,12 +115,11 @@ const PhotoScreen: React.FC = () => {
         )}
         {!cameraOpen && (
           <>
-          <View style={styles.row}>
                     <View style={styles.buttonContainer}>
-                      <ButtonComp  title={cameraOpen ? T.photo_screen.buttonClose : T.photo_screen.buttonOpen}
-                        onPress={() => setCameraOpen(!cameraOpen)} />
+                      <ButtonComp title='<' variant='outline' size='lg' onPress={() => navigation.navigate('Home')}/>
+                      <View style={{width:80}} />
+                      <TextComp size='xl' fontFam='title' fontWeight='bold'>Gallery</TextComp>
                     </View>
-                  </View>
             <ImageView
               images={images}
               imageIndex={currentImageIndex}
@@ -150,9 +153,14 @@ const PhotoScreen: React.FC = () => {
             />
             </>
         )}
-        
+        {!cameraOpen && (
+          <View style={styles.stickyFooter}>
+           <ButtonComp shape='circle' title={T.photo_screen.buttonOpen} onPress={() => setCameraOpen(!cameraOpen)}/>
+          </View>
+        )}
+       
       </View>
-    </>
+    </BaseLayout>
   );
 };
 

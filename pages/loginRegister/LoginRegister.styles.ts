@@ -9,12 +9,25 @@ export const styles = StyleSheet.create({
     padding: 30,
   },
   input: {
-    height: 70,
+    height: 60,
     paddingHorizontal: 10,
     marginBottom: 20,
     width: '90%',
     borderRadius: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    fontSize:17
+
+  },
+  inputError: {
+    height: 60,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    width: '90%',
+    borderRadius: 10,
+    backgroundColor: 'white',
+    fontSize:17,
+    borderWidth:1,
+    borderColor: 'red'
 
   },
   row: {
