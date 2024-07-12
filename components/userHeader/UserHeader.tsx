@@ -10,7 +10,7 @@ const UserHeader = ({username, onDisplayNotification}) => {
     const {logout} = useAuthentication();
     return(
         <View style={styles.container}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'space-between', width:'40%'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'space-between', gap:20}}>
                 <View style={styles.imageContainer}>
                     <Image
                         source={require('../../images/user.png')}
@@ -18,17 +18,16 @@ const UserHeader = ({username, onDisplayNotification}) => {
                         resizeMode="contain"
                     />
                 </View>
-                <View style={{alignItems:'center'}}>
-                    <Text fontFam="title" size="lg" fontWeight="bold">{username}</Text>
-                    <Button title="logout" variant="outline" size="xs" onPress={logout}/>
+                <View>
+                    <Text fontFam="title" size="xl" fontWeight="bold">{username}</Text>
 
                 </View>
                 
             </View>
             
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => onDisplayNotification()}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={logout}>
               <Image
-                source={require('../../images/notification.png')}
+                source={require('../../images/logout.png')}
                 style={styles.buttonImage}
                 resizeMode="contain"
               />

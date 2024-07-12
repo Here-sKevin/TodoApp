@@ -11,6 +11,7 @@ import { useRegisterModel } from "../signup/interface/RegisterModel";
 import SignUpScreenApi from "../signup/SignUpScreenApi";
 import SignInScreenApi from "../signin/SignInScreenApi";
 import FormControl from "../../components/ui/FormControl";
+import BaseLayout from "../../components/layout/baseLayout/BaseLayout";
 
 const tabs = [
     {value: 'tab1', title: 'Sign In'},
@@ -57,9 +58,9 @@ const LoginRegister = () => {
         });
 
     return (
-        <>
+        <BaseLayout camera={false}>
             {!collapse && (
-                <View style={{height: 350, flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{height: 400, alignItems: 'center', justifyContent: 'center'}}>
                     <Image source={require('../../images/account.png')} />
                     <Text size="xxl" fontWeight="bold">Sign In or Sign Up</Text>
                 </View>
@@ -70,7 +71,7 @@ const LoginRegister = () => {
                 {tabs.map((tab) => {
                 return <Tabs.Tab key={tab.value} value={tab.value} title={tab.title} />;
                 })}
-            </Tabs.List>
+            </Tabs.List> 
             <Tabs.Content value={tabs[0].value}>
                 <View style={styles.container}>
                 <FormControl errors={getErrors('username')}>
@@ -106,7 +107,8 @@ const LoginRegister = () => {
                 </View>
             </Tabs.Content>
             </Tabs>
-        </>
+    
+        </BaseLayout>
        
     )
 }

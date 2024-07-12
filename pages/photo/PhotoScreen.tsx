@@ -94,15 +94,16 @@ const PhotoScreen: React.FC = () => {
   }
 
   if(loading) {
-    return(
-      <View>
-        <ActivityIndicator style={{alignItems: "center", justifyContent: "center"}} size="large" />
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color='lightgreen' />
       </View>
-    )
+
+    ) 
   }
 
   return (
-    <BaseLayout>
+    <BaseLayout camera={cameraOpen}>
 
       <View style={{flex: 1}}>
         {cameraOpen && (

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   root: { flexGrow: 0 },
   container: {
-    flex: 0,
+    flex: 1,
     paddingLeft: 10,
     marginBottom: 10
   },
@@ -45,5 +45,10 @@ export const styles = StyleSheet.create({
     bottom: 0,
     padding: 20,
     alignItems: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
   },
 });

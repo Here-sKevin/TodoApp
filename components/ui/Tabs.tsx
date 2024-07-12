@@ -10,22 +10,33 @@ const defaultStyles = (theme: AppTheme) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.app.border,
-      marginBottom: 14
+      //borderBottomWidth: 1,
+      //borderBottomColor: theme.colors.app.border,
+      marginBottom: 14,
+      //borderWidth: 1,
+      borderRadius: 10,
+      backgroundColor: 'lightgrey',
     },
     tabWrapper: {
       flex: 1,
       height: 40,
       borderBottomWidth: 2,
       borderBottomColor: 'transparent',
-      justifyContent: 'center'
+      borderTopWidth: 2,
+      borderTopColor: 'transparent',
+      borderRightWidth: 2,
+      borderRightColor: 'transparent',
+      justifyContent: 'center',
     },
     tabText: {
       textAlign: 'center'
     },
     tabActive: {
-      borderBottomColor: theme.colors.app.primary
+      backgroundColor: '#F6F6F6',
+      borderRadius: 10,
+      borderWidth: 0.2,
+      borderColor: 'grey',
+      //borderBottomColor: theme.colors.app.primary
     }
   });
 };
@@ -100,7 +111,7 @@ const Tab: FC<TabProps> = ({value, title}) => {
         color={isActive ? 'primary' : 'secondary'}
         style={[styles.tabText]}
         size='md'
-        fontWeight={isActive ? 'medium' : 'regular'}
+        fontWeight={isActive ? 'bold' : 'regular'}
       >
         {title}
       </Text>

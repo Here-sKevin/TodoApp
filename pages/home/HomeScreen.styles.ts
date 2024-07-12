@@ -3,10 +3,8 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    //flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-    //backgroundColor: 'white',
+    flex:1,
+    alignItems:'center'
   },
   row: {
     flexDirection: 'row',
@@ -79,14 +77,17 @@ export const styles = StyleSheet.create({
     //fontWeight: 'bold',
   },
   dropdownButtonStyle: {
-    flex: 1,
-    height: 50,
+    //flex: 1,
+    //height: 20,
     backgroundColor: 'white',
     borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: 45,
+    paddingVertical: 12,
+    borderWidth:1,
+    borderColor: 'lightgrey',
   },
   dropdownButtonTxtStyle: {
     flex: 1,
@@ -128,4 +129,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+  notification: {
+    borderRadius: 20,
+    //backgroundColor: 'white',
+    borderWidth:1,
+    borderColor: 'lightgrey',
+    padding:16
+},
+notificationImage: {
+  width: 25,
+  height: 25,
+},
 });

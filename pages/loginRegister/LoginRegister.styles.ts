@@ -10,22 +10,21 @@ export const styles = StyleSheet.create({
   },
   input: {
     height: 60,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    width: '90%',
+    paddingHorizontal: 20,
+    marginBottom: 7,
+    width: '100%',
     borderRadius: 10,
-    backgroundColor: 'white',
-    fontSize:17
-
+    backgroundColor: '#F1F1F1',
+    fontSize:16,
   },
   inputError: {
     height: 60,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     marginBottom: 20,
-    width: '90%',
+    width: '100%',
     borderRadius: 10,
-    backgroundColor: 'white',
-    fontSize:17,
+    backgroundColor: '#F1F1F1',
+    fontSize:16,
     borderWidth:1,
     borderColor: 'red'
 
@@ -33,11 +32,22 @@ export const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    margin: 10,
+    margin: 20,
+    width:'100%'
   },
   buttonContainer: {
-    flex: 1,
-    margin: 10,
+    //flex: 1,
+    //margin: 10,
+    width:'100%'
+  },
+  stickyFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 20,
+    alignItems: 'center',
+    width:'100%'
   },
   
 });

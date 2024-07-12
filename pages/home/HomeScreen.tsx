@@ -46,7 +46,6 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     useCallback(() => {
       const fetchData = async () => {
             const data = await TodoScreenApi.getMyTodos(user); 
-            console.log('Data: ', data.length)
             setTodos(data)
             setPhotos([]);
             RNFS.readDir("file:///data/data/com.awesomeproject/cache/")
@@ -69,23 +68,22 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       setLoading(true)
       fetchData();
       setTimeout(() => {
-        if(langDropdownRef.current) {
+        if(langDropdownRef.current) { 
           langDropdownRef.current.selectIndex(language === 'en' ? 0 : 1);
         }
-      }, 100);
+      }, 200);
       
       return () => {
-        console.log('Screen unfocused');
       };
     }, [])
   );
 
 
   useEffect(() => {
-    const langArray: string[] = [require('../../images/england.png'), require('../../images/portugal.png')];
+    //const langArray: string[] = [require('../../images/england.png'), require('../../images/portugal.png')];
+    const langArray: string[] = ['en', 'pt'];
     setLang(langArray)
     
-
     setTimeout(() => {
       if(langDropdownRef.current) {
         langDropdownRef.current.selectIndex(language === 'en' ? 0 : 1);
@@ -118,16 +116,20 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     });
   }
 
-  if(loading)
-    return <ActivityIndicator />
+  if(loading){
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color='lightgreen' />
+      </View>
+
+    ) 
+  }
+    
 
   return(
-    <BaseLayout>
-        <View style={styles.container}>
+    <BaseLayout camera={false}>
           <UserHeader username={user?.username} onDisplayNotification={() => onDisplayNotification()} />
-          <ButtonContainer>
-            <View style={styles.selectcontainer}>
-              <View style={{width:70, height: 50 }}>
+          <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
                 <SelectDropdown
                   ref={langDropdownRef}
                   data={lang}
@@ -138,7 +140,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
                   renderButton={(l) => {
                     return (
                       <View style={styles.dropdownButtonStyle}>
-                        <Image source={l} />
+                        <TextComp fontWeight='bold'>{l}</TextComp>
                       </View>
                     );
                   }}
@@ -149,20 +151,22 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
                           ...styles.dropdownItemStyle,
                           ...(isSelected && {backgroundColor: 'white'}),
                         }}>
-                        <Image source={item} />
+                        <TextComp fontWeight='bold'>{item}</TextComp>
                       </View>
                     );
                   }}
                   dropdownStyle={styles.dropdownMenuStyle}
                 />
-              </View>
-            </View>
-          </ButtonContainer>
-          <View style={{height:40}} />
+                <TouchableOpacity style={styles.notification} onPress={() => onDisplayNotification()}>
+                  <Image
+                    source={require('../../images/notification.png')}
+                    style={styles.notificationImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+          </View>
           <TaskInfoCard todos={todos} goTodo={() => navigation.navigate('Todo')} />
-          <View style={{height:40}} />
           <PhotoInfoCard photo={photos} goPhoto={() => navigation.navigate('Photo')}/>
-        </View>
     </BaseLayout>
   )
 };

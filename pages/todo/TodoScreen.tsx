@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import {Alert, FlatList, Modal, Text, TextInput, View} from 'react-native';
+import {ActivityIndicator, Alert, FlatList, Modal, Text, TextInput, View} from 'react-native';
 import { TodoModel, TodoType, useTodoModel } from './interface/TodoModel';
 import { Button as ButtonComp } from '../../components/ui/Button'
 import { Text as TextComp } from '../../components/ui/Text'
@@ -20,6 +20,7 @@ const TodoScreen: React.FC = () => {
   const [modalType, setModalType] = useState<'create' | 'edit' | 'delete' | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState(true);
+  const [loading, setLoading] = useState(false)
   const navigation = useNavigation();
   
   const {
@@ -36,7 +37,9 @@ const TodoScreen: React.FC = () => {
     const fetchData = async () => {
       const tdata = await TodoScreenApi.getMyTodos(user);
       setTodos(tdata);
+      setLoading(false)
     }
+    setLoading(true)
     fetchData();
 
   }, []);
@@ -120,7 +123,6 @@ const TodoScreen: React.FC = () => {
   }
 
   const handleCompleted = async (data: TodoModel) => {
-    console.log('Data: ', data)
     let d;
     await TodoScreenApi.setCompleted(data);
     if(!isChecked)
@@ -130,18 +132,17 @@ const TodoScreen: React.FC = () => {
    setTodos(d);
   }
 
-  /*if(loading){
-    return(
-      <>
-      <View>
-        <ActivityIndicator style={{alignItems: "center", justifyContent: "center"}} size="large" />
+  if(loading){
+    return (
+      <View style={[styles.cont, styles.horizontal]}>
+          <ActivityIndicator size="large" color='lightgreen' />
       </View>
-      </>         
+
     ) 
   } 
-  if(error) return <Text>Error Message: {error.message}</Text>*/
+  /*if(error) return <Text>Error Message: {error.message}</Text>*/
   return (
-    <BaseLayout>
+    <BaseLayout camera={false}>
       <View>
         <View style={styles.row}>
           <View style={styles.buttonContainer}>
@@ -157,8 +158,7 @@ const TodoScreen: React.FC = () => {
           data={todos}
           renderItem={({item}) => (
             <>
-            <TodoCard openModal={(type, data) => openModal(type,data)} completed={item.completed} onValueChange={() => handleCompleted(item)} title={item.title} itemData={item} />
-            <View style={{height: 5}} />
+              <TodoCard openModal={(type, data) => openModal(type,data)} completed={item.completed} onValueChange={() => handleCompleted(item)} title={item.title} itemData={item} />
             </>
           )}          
         />
@@ -178,12 +178,8 @@ const TodoScreen: React.FC = () => {
             </FormControl>
                 
                   <View style={styles.row}>
-                    <View style={styles.buttonContainer}>
                       <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
-                    </View>
-                    <View style={styles.buttonContainer}>
                       <ButtonComp variant='approved' title={T.todo_screen.buttonCreate} onPress={() => onSubmit()} />
-                    </View>
                   </View>
             </View>         
           </View>
@@ -200,12 +196,8 @@ const TodoScreen: React.FC = () => {
             </FormControl>
               
                   <View style={styles.row}>
-                    <View style={styles.buttonContainer}>
                       <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
-                    </View>
-                    <View style={styles.buttonContainer}>
                       <ButtonComp title={T.todo_screen.buttonEdit} onPress={() => onSubmit()} />
-                    </View>
                   </View>
             </View>         
           </View>
@@ -217,14 +209,11 @@ const TodoScreen: React.FC = () => {
           <>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
-              <Text>Quer Apagar o todo: {field('title').value}  ?</Text>
+              <Text style={{padding:20}}>Quer Apagar o todo: {field('title').value}  ?</Text>
+              
                     <View style={styles.row}>
-                      <View style={styles.buttonContainer}>
                         <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
-                      </View>
-                      <View style={styles.buttonContainer}>
-                      <ButtonComp title={T.todo_screen.buttonDelete} onPress={() => onSubmit()} />
-                      </View>
+                        <ButtonComp title={T.todo_screen.buttonDelete} onPress={() => onSubmit()} />
                     </View>
               </View>         
             </View> 
@@ -233,7 +222,7 @@ const TodoScreen: React.FC = () => {
       </Modal>
       </View>
       <View style={styles.stickyFooter}>
-        <ButtonComp shape='circle' variant='approved' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
+        <ButtonComp shape='circle' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
       </View>
     </BaseLayout>
   );

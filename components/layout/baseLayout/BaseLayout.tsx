@@ -5,12 +5,13 @@ import { styles } from "./BaseLayout.styles";
 
 type Props = {
     children: ReactNode;
+    camera: boolean
 }
 
-const BaseLayout = ({children} : Props) => {
+const BaseLayout = ({children, camera} : Props) => {
 
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={camera ? styles.containerCamera : styles.container}>
             {children}
         </SafeAreaView>
     )

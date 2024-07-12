@@ -3,10 +3,22 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
-        padding: 5,
-        paddingVertical: 25,
+        padding: 10,
+        //paddingVertical: 25,
         backgroundColor: 'white',
-        height: '100%'
+        height: '100%',
+        gap: 25
+        //paddingHorizontal: 15,
+        //justifyContent:'center'
+        
+    },
+    containerCamera: {
+        //paddingVertical: 25,
+        backgroundColor: 'white',
+        height: '100%',
+        gap: 25
+        //paddingHorizontal: 15,
+        //justifyContent:'center'
         
     }
 })

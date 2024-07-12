@@ -8,8 +8,11 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         //width: '100%',
         backgroundColor:'#F4F4F4',
-        padding:20,
+        //padding:10,
         borderRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        alignItems:'center'
     },
     containerCollapse: {
         flexDirection: 'row',
@@ -17,26 +20,19 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         backgroundColor:'#E5E5E5',
-        padding:20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         //borderRadius: 10,
         borderTopStartRadius: 10
     },
     imageContainer: {
-        /*flex:0.3,
-        alignItems:'center',
-        //padding: 10,
-        justifyContent: 'space-around',
-        backgroundColor: 'white',
-        borderRadius: 100,
-        height: 40,*/
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor:'white',
         borderRadius: 10,
-        height:40,
-        marginTop: 15,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        height:50
         
     },
       textContainer: {

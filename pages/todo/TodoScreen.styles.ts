@@ -34,8 +34,10 @@ export const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 10,
+    justifyContent: 'space-between',
+    alignItems:'center',
+    gap:100
+    //margin: 10,
   },
   buttonContainer: {
     flex: 1,
@@ -52,7 +54,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
   },
   modalContent: {
-    padding: 20,
+    padding: 50,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
@@ -75,7 +77,8 @@ export const styles = StyleSheet.create({
     width: 300,
   },
   list: {
-    paddingBottom: 100
+    //paddingBottom: 100
+    gap:5
   },
   stickyFooter: {
     position: 'absolute',
@@ -85,4 +88,13 @@ export const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+  cont: {
+    flex:1,
+    justifyContent:'center'
+  }
 });

@@ -6,6 +6,15 @@ import {useStyles} from '../../styles/useStyles';
 import {Text} from './Text';
 
 const defaultStyles = (theme: AppTheme) => ({
+  fontFam: StyleSheet.create({
+    title: {
+      fontFamily: 'helvetica'
+    },
+    description: {
+      fontFamily: 'calibri'
+    },
+
+  }),
   base: StyleSheet.create({
     buttonWrapper: {
       alignItems: 'center',
@@ -116,6 +125,12 @@ interface IButtonProps {
    */
   size?: keyof ReturnType<typeof defaultStyles>['sizes'];
 
+    /**
+   * The text of the button.
+   * @default 'primary'
+   */
+    fontFam?: keyof ReturnType<typeof defaultStyles>['fontFam'];
+
   /**
    * The corner of the button.
    * @default 'square'
@@ -179,6 +194,7 @@ const Button: FC<IButtonProps> = ({
   size = 'md',
   variant = 'default',
   shape = 'square',
+  fontFam = 'primary',
   leftSlot,
   rightSlot
 }) => {
@@ -195,6 +211,7 @@ const Button: FC<IButtonProps> = ({
         styles.sizes[size],
         styles.variants.button[variant],
         styles.shapes[shape],
+        styles.fontFam[fontFam],
         isDisabled && styles.base.disabled,
         style
       ]}
@@ -212,6 +229,7 @@ const Button: FC<IButtonProps> = ({
         />
       ) : null}
       <Text
+        fontFam={fontFam}
         size={size}
         fontWeight='medium'
         style={[styles.variants.text[variant], textStyle]}

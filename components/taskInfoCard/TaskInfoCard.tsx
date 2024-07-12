@@ -15,28 +15,29 @@ const TaskInfoCard = ({todos, goTodo}:Props) => {
     const {user} = useAuthentication()
     if(todos.length > 0) {
         return(
-            <View style={{width:'100%', alignItems:'center'}}>
+            <View>
                 <View style={styles.titleWrapper}>
                     <Text fontFam="title" size="xl" fontWeight="bold">Last Task Created</Text>
-                    <Button variant="ghost"  title="See all" onPress={() => goTodo()} />
-    
+                    <Button variant="ghost" size="md"  title="See all" onPress={() => goTodo()} />
                 </View>
                 <View style={styles.container}>
-                    <View style={{padding:10, backgroundColor: 'white', width:'14%', borderRadius: 10}}>
+                    <View style={{padding:15, backgroundColor: '#E6FEFF', width:'16%', borderRadius: 20}}>
                         <Image source={require('../../images/to-do-list.png')} />
                     </View>
-                    <View style={{height:30}} />
-                    <Text fontFam="title" fontWeight="bold" size="xl">{todos[todos.length-1].title}</Text>
-                    <Text fontFam="description" size="sm">{todos[todos.length-1].completed ? 'Task completed' : 'Task not completed'}</Text>
-                    <View style={{height:30}} />
-                    <View style={{flexDirection: 'row', alignItems:'center'}}>
-                        <Image source={require('../../images/user.png')} />
-                        <Text size="sm" fontWeight="bold">{user.username}</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{paddingVertical:20}}>
+                            <Text fontFam="title" fontWeight="bold" size="xl">{todos[todos.length-1].title}</Text>
+                            <Text fontFam="description" size="md">{todos[todos.length-1].completed ? 'Task completed' : 'Task not completed'}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', paddingTop:20, paddingHorizontal: 130, paddingLeft: 160}}>
+                            <View style={{flexDirection:'row', alignItems: 'center'}}>
+                                <Image source={require('../../images/user.png')} />
+                                <Text size="sm" fontWeight="bold">{user.username}</Text>
+                            </View>
+                        </View>
                     </View>
-    
                 </View>
-            </View>
-            
+            </View>           
         )
     }
     

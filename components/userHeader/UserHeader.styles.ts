@@ -6,23 +6,21 @@ export const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '80%'
+        paddingHorizontal: 25
+        //width: '80%'
 
     },
     buttonContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
+        borderRadius: 20,
         //backgroundColor: 'white',
         borderWidth:1,
-        borderColor: 'lightgrey'
+        borderColor: 'lightgrey',
+        padding:17
     },
     imageContainer: {
         width: 50,
         height: 50,
-        borderRadius: 5,
+        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#EDEDED',

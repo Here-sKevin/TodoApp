@@ -11,7 +11,6 @@ type Props = {
 }
 
 const PhotoInfoCard = ({photo, goPhoto}: Props) => {
-    console.log('Photos: ', photo)
     const renderItem = ({ item, index }) => {
         const jpg = item.split('/');
         let bgc;
@@ -23,15 +22,14 @@ const PhotoInfoCard = ({photo, goPhoto}: Props) => {
             <>
                 <View style={[styles.itemContainer, {backgroundColor: bgc}]}>
                     <Image source={{ uri: item }} style={styles.image} />
-                    <Text size="sm" fontWeight="bold">{jpg[jpg.length-1]}</Text>
+                    <Text style={{paddingRight:15}} size="md" fontWeight="bold">{jpg[jpg.length-1]}</Text>
                 </View>
-                <View style={{height:5}} />
             </>
             
         )  
     };
     return(
-        <View style={{width:'100%', alignItems:'center'}}>
+        <View>
             <View style={styles.titleWrapper}>
                 <Text fontFam="title" size="xl" fontWeight="bold">Photos</Text>
                 <Button variant="ghost"  title="See all" onPress={() => goPhoto()} />
@@ -42,6 +40,7 @@ const PhotoInfoCard = ({photo, goPhoto}: Props) => {
                     data={photo}
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{gap:5}}
                 />
             </View>
         </View>

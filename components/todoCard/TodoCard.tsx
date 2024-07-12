@@ -5,11 +5,18 @@ import { styles } from "./TodoCard.styles";
 import { Button as ButtonComp } from '../../components/ui/Button'
 import { useTranslation } from "../../shared/translations/Translations";
 import { Text } from "../ui/Text";
+import { Checkbox } from "../ui/Checkbox";
 
 
 const TodoCard = ({completed, onValueChange, title, itemData, openModal}) => {
     const { T } = useTranslation();
     const [collapsed, setCollapsed] = useState(true);
+    const [isChecked, setIsChecked] = useState(completed);
+
+    const toggleCheckbox = () => {
+        onValueChange(itemData)
+        setIsChecked((previousState) => !previousState);
+    } 
 
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
@@ -17,7 +24,7 @@ const TodoCard = ({completed, onValueChange, title, itemData, openModal}) => {
 
     return(
         <View>
-            <TouchableOpacity style={collapsed ? styles.container : styles.containerCollapse} onPress={toggleCollapsed}>
+            <TouchableOpacity style={collapsed ? styles.container : styles.containerCollapse}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={require('../../images/to-do-list.png')} />
                 </View>
@@ -25,7 +32,16 @@ const TodoCard = ({completed, onValueChange, title, itemData, openModal}) => {
                     <Text fontWeight="bold" size="md">{title}</Text>
                 </View>
                 <View style={styles.textContainer}>
-                    <ButtonComp variant={completed ? 'approved' : 'outline'} title='Done' onPress={() => onValueChange(itemData)} />
+                    <Checkbox label=" " onValueChange={toggleCheckbox} value={isChecked} />
+                </View>
+                <View style={{gap: 10, flexDirection:'row'}}>
+                    <TouchableOpacity onPress={() => {openModal('edit', itemData) }}>
+                        <Image source={require('../../images/edit.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => {openModal('delete', itemData)}} >
+                        <Image source={require('../../images/delete.png')} />
+                    </TouchableOpacity>
+
                 </View>
 
             </TouchableOpacity>

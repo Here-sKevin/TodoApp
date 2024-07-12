@@ -31,7 +31,9 @@ const defaultStyles = (theme: AppTheme) => {
       justifyContent: 'center'
     },
     checked: {
-      backgroundColor: theme.colors.app.primary
+      backgroundColor: 'lightgreen',
+      borderColor: 'transparent'
+      //backgroundColor: theme.colors.app.primary
     },
     icon: {
       color: theme.colors.app.primaryForeground,
