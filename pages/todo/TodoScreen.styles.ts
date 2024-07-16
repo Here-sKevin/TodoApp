@@ -51,27 +51,27 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    padding: 50,
+    padding: 40,
     backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-    elevation: 10, // For Android shadow
-    shadowColor: '#000', // For iOS shadow
+    borderRadius: 20,
+    //alignItems: 'center',
+    elevation: 10,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    gap:30
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
   },
   input: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderColor: 'lightgray',
+    borderBottomWidth:1,
     paddingHorizontal: 10,
     marginBottom: 20,
     width: 300,
@@ -85,8 +85,8 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 20,
-    alignItems: 'center',
+    padding: 30,
+
   },
   horizontal: {
     flexDirection: 'row',

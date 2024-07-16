@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
     margin: 10,
     //width:'15%',
     flexDirection:'row',
-    alignItems:'center'
+    alignItems:'center',
+    gap: 90
   },
   root: { flexGrow: 0 },
   container: {

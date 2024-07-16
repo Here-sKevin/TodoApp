@@ -88,6 +88,16 @@ const defaultStyles = (theme: AppTheme) => ({
       },
       approved: {
         backgroundColor: 'lightgreen'
+      },
+      gold: {
+        backgroundColor:'#FFC96D',
+        borderWidth: 2,
+        borderColor:'#FFA100'
+      },
+      gold2: {
+        backgroundColor:'#FFC96D',
+        borderWidth: 2,
+        borderColor:'#FFA100'
       }
     }),
     text: StyleSheet.create({
@@ -108,6 +118,14 @@ const defaultStyles = (theme: AppTheme) => ({
       },
       destructive: {
         color: theme.colors.app.destructiveForeground
+      },
+      gold: {
+        color:'##FFA100',
+        fontSize: 20
+      },
+      gold2: {
+        color:'##FFA100',
+        fontSize: 16
       }
     })
   }

@@ -29,7 +29,7 @@ const TaskInfoCard = ({todos, goTodo}:Props) => {
                             <Text fontFam="title" fontWeight="bold" size="xl">{todos[todos.length-1].title}</Text>
                             <Text fontFam="description" size="md">{todos[todos.length-1].completed ? 'Task completed' : 'Task not completed'}</Text>
                         </View>
-                        <View style={{flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', paddingTop:20, paddingHorizontal: 130, paddingLeft: 160}}>
+                        <View style={{flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', paddingTop:20, paddingHorizontal: 130}}>
                             <View style={{flexDirection:'row', alignItems: 'center'}}>
                                 <Image source={require('../../images/user.png')} />
                                 <Text size="sm" fontWeight="bold">{user.username}</Text>

@@ -24,40 +24,22 @@ const TodoCard = ({completed, onValueChange, title, itemData, openModal}) => {
 
     return(
         <View>
-            <TouchableOpacity style={collapsed ? styles.container : styles.containerCollapse}>
-                <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={require('../../images/to-do-list.png')} />
-                </View>
+            <TouchableOpacity style={isChecked ? styles.checked : styles.notChecked}>
+                <TouchableOpacity style={isChecked ? styles.imageContainerChecked : styles.imageContainerNotchecked} onPress={toggleCheckbox}>
+                    <Image style={isChecked ? styles.imageChecked : styles.imageNotChecked} source={require('../../images/checked.png')} />
+                </TouchableOpacity>
                 <View style={styles.textContainer}>
                     <Text fontWeight="bold" size="md">{title}</Text>
                 </View>
-                <View style={styles.textContainer}>
-                    <Checkbox label=" " onValueChange={toggleCheckbox} value={isChecked} />
-                </View>
                 <View style={{gap: 10, flexDirection:'row'}}>
-                    <TouchableOpacity onPress={() => {openModal('edit', itemData) }}>
+                    <TouchableOpacity style={{paddingHorizontal:10, paddingVertical:10, borderRadius:100, backgroundColor: '#FFE89E', alignItems:'center'}} onPress={() => {openModal('edit', itemData) }}>
                         <Image source={require('../../images/edit.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => {openModal('delete', itemData)}} >
-                        <Image source={require('../../images/delete.png')} />
+                    <TouchableOpacity style={{borderRadius:100, backgroundColor: '#FFC7C7', justifyContent:'center', padding:10}}  onPress={() => {openModal('delete', itemData)}} >
+                        <Image source={require('../../images/bin.png')} />
                     </TouchableOpacity>
-
                 </View>
-
             </TouchableOpacity>
-            {!collapsed && (
-                <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
-                        <ButtonComp title={T.todo_screen.buttonEdit} size='sm' onPress={() => {openModal('edit', itemData) }}/>
-                    </View>
-                    <View style={styles.button}>
-                        <ButtonComp variant='destructive' title={T.todo_screen.buttonDelete} size='sm' onPress={() => {
-                            openModal('delete', itemData);
-                        }} />
-                    </View>
-                </View>
-            )}
-            
         </View>
     )
 }

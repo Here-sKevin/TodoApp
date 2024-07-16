@@ -129,8 +129,11 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   return(
     <BaseLayout camera={false}>
           <UserHeader username={user?.username} onDisplayNotification={() => onDisplayNotification()} />
-          <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
-                <SelectDropdown
+          <TaskInfoCard todos={todos} goTodo={() => navigation.navigate('Todo')} />
+          <PhotoInfoCard photo={photos} goPhoto={() => navigation.navigate('Photo')}/>
+          <View style={styles.stickyFooter}>
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly', gap: 40}}>
+            <SelectDropdown
                   ref={langDropdownRef}
                   data={lang}
                   //defaultValueByIndex={1}
@@ -164,9 +167,8 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
+                </View>
           </View>
-          <TaskInfoCard todos={todos} goTodo={() => navigation.navigate('Todo')} />
-          <PhotoInfoCard photo={photos} goPhoto={() => navigation.navigate('Photo')}/>
     </BaseLayout>
   )
 };

@@ -118,7 +118,6 @@ const PhotoScreen: React.FC = () => {
           <>
                     <View style={styles.buttonContainer}>
                       <ButtonComp title='<' variant='outline' size='lg' onPress={() => navigation.navigate('Home')}/>
-                      <View style={{width:80}} />
                       <TextComp size='xl' fontFam='title' fontWeight='bold'>Gallery</TextComp>
                     </View>
             <ImageView
@@ -128,7 +127,10 @@ const PhotoScreen: React.FC = () => {
               visible={visible}
               onRequestClose={() => setIsVisible(false)} 
               FooterComponent={() => (
-                <ButtonComp title={T.photo_screen.buttonDelete} rightSlot={<Image source={require('../../images/delete.png')}/>} variant='ghost' onPress={() => handleDeletePhoto(currentImageIndex)} />
+                <View style={{alignItems: 'center', flex: 1, justifyContent:'center'}}>
+                  <ButtonComp title={T.photo_screen.buttonDelete} rightSlot={<Image source={require('../../images/delete.png')}/>} variant='ghost' onPress={() => handleDeletePhoto(currentImageIndex)} />
+                </View>
+                
               )}
             />
             

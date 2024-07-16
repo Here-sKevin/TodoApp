@@ -136,7 +136,7 @@ export const styles = StyleSheet.create({
   },
   notification: {
     borderRadius: 20,
-    //backgroundColor: 'white',
+    backgroundColor: 'white',
     borderWidth:1,
     borderColor: 'lightgrey',
     padding:16
@@ -144,5 +144,14 @@ export const styles = StyleSheet.create({
 notificationImage: {
   width: 25,
   height: 25,
+},
+stickyFooter: {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  bottom: 0,
+  padding: 20,
+  alignItems: 'center',
+  backgroundColor: 'transparent',
 },
 });

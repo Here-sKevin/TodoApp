@@ -37,16 +37,16 @@ const {TranslationInstance, useTranslation} = SetupReactTranslations({
     },
     todo_screen: {
       buttonEdit: {
-        en: 'Edit',
-        pt: 'Editar',
+        en: 'Edit task',
+        pt: 'Editar tarefa',
       },
       buttonDelete: {
-        en: 'Delete',
-        pt: 'Apagar',
+        en: 'Delete Task',
+        pt: 'Apagar tarefa',
       },
       buttonCreate: {
-        en: 'Create Todo',
-        pt: 'Criar Todo',
+        en: 'Add a new Task',
+        pt: 'Adicionar nova tarefa',
       },
       buttonTodos: {
         en: 'MyTodos',
@@ -56,6 +56,10 @@ const {TranslationInstance, useTranslation} = SetupReactTranslations({
         en: 'Cancel',
         pt: 'Cancelar',
       },
+      message_delete: {
+        en:'Do you want to delete the task:',
+        pt:'Quer apagar a tarefa: '
+      }
     },
     photo_screen: {
       buttonOpen: {

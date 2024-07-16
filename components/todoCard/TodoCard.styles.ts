@@ -2,39 +2,53 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    container: {
+    notChecked: {
         flexDirection: 'row',
-        //flex: 1,
         justifyContent: 'space-between',
-        //width: '100%',
         backgroundColor:'#F4F4F4',
-        //padding:10,
         borderRadius: 10,
         paddingHorizontal: 20,
-        paddingVertical: 10,
-        alignItems:'center'
+        paddingVertical: 20,
+        alignItems:'center',
+        borderWidth:1,
+        borderColor:'#8D8D8D'
     },
-    containerCollapse: {
-        flexDirection: 'row',
-        //flex: 1,
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor:'#E5E5E5',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        //borderRadius: 10,
-        borderTopStartRadius: 10
+    checked: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      backgroundColor:'#D7FFC4',
+      borderRadius: 10,
+      paddingHorizontal: 20,
+      paddingVertical: 20,
+      alignItems:'center',
+      borderWidth:1,
+      borderColor: '#84E258'
+
     },
-    imageContainer: {
+    imageContainerChecked: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor:'white',
-        borderRadius: 10,
+        backgroundColor:'#84E258',
+        borderRadius: 100,
         paddingHorizontal: 10,
-        height:50
+        paddingVertical: 10
+        //height:50
         
     },
+    imageContainerNotchecked: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      //backgroundColor:'white',
+      borderRadius: 100,
+      paddingHorizontal: 10,
+      paddingVertical: 10,
+
+      borderWidth:1,
+      borderColor:'#D7D7D7'
+      
+  },
       textContainer: {
         flex:1,
         alignItems:'center',
@@ -57,8 +71,10 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 10
       },
-      image: {
-        //width: 30,
-        //height: 30
+      imageChecked: {
+        tintColor:'white'
+      },
+      imageNotChecked: {
+        tintColor:'#D7D7D7',
       }
 })

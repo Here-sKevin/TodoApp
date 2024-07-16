@@ -173,13 +173,16 @@ const TodoScreen: React.FC = () => {
           <>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                <TextComp size='lg'>{T.todo_screen.buttonCreate}</TextComp>
+                <ButtonComp variant='outline' shape='circle' title=' X ' onPress={closeModal} />
+              </View>
             <FormControl errors={getErrors('title')}>
               <TextInput style={styles.input} placeholder='New Todo' /*value={newTitle}*/ /*onChangeText={setNewTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
             </FormControl>
                 
-                  <View style={styles.row}>
-                      <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
-                      <ButtonComp variant='approved' title={T.todo_screen.buttonCreate} onPress={() => onSubmit()} />
+                  <View style={{}}>
+                      <ButtonComp variant='gold2' shape='circle' title={T.todo_screen.buttonCreate} onPress={() => onSubmit()} />
                   </View>
             </View>         
           </View>
@@ -191,13 +194,16 @@ const TodoScreen: React.FC = () => {
           <>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                <TextComp size='lg'>{T.todo_screen.buttonEdit}</TextComp>
+                <ButtonComp variant='outline' shape='circle' title=' X ' onPress={closeModal} />
+            </View>
             <FormControl errors={getErrors('title')}>
               <TextInput style={styles.input} value={field('title').value} /*onChangeText={setEditTitle}*/ onChangeText={(e) => field('title').onChange(e)} />
             </FormControl>
               
-                  <View style={styles.row}>
-                      <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
-                      <ButtonComp title={T.todo_screen.buttonEdit} onPress={() => onSubmit()} />
+                  <View>                     
+                      <ButtonComp variant='gold2' shape='circle' title={T.todo_screen.buttonEdit} onPress={() => onSubmit()} />
                   </View>
             </View>         
           </View>
@@ -209,11 +215,14 @@ const TodoScreen: React.FC = () => {
           <>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
-              <Text style={{padding:20}}>Quer Apagar o todo: {field('title').value}  ?</Text>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                <TextComp size='lg'>{T.todo_screen.buttonDelete}</TextComp>
+                <ButtonComp variant='outline' shape='circle' title=' X ' onPress={closeModal} />
+              </View>
+              <Text style={{padding:20}}>{T.todo_screen.message_delete}{field('title').value}  ?</Text>
               
-                    <View style={styles.row}>
-                        <ButtonComp variant='destructive' title={T.todo_screen.buttonCancel} onPress={closeModal} />
-                        <ButtonComp title={T.todo_screen.buttonDelete} onPress={() => onSubmit()} />
+                    <View>
+                        <ButtonComp variant='gold2' shape='circle' title={T.todo_screen.buttonDelete} onPress={() => onSubmit()} />
                     </View>
               </View>         
             </View> 
@@ -222,7 +231,7 @@ const TodoScreen: React.FC = () => {
       </Modal>
       </View>
       <View style={styles.stickyFooter}>
-        <ButtonComp shape='circle' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
+        <ButtonComp variant='gold' shape='circle' size='xl' title={T.todo_screen.buttonCreate} onPress={() => openModal('create', null)} />
       </View>
     </BaseLayout>
   );
