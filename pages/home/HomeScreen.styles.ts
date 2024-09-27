@@ -1,10 +1,9 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex:1,
-    alignItems:'center'
+    flex: 1,
+    alignItems: 'center',
   },
   row: {
     flexDirection: 'row',
@@ -21,10 +20,11 @@ export const styles = StyleSheet.create({
     //flex: 1,
     //alignItems: 'center',
     justifyContent: 'space-around',
-    borderColor: 'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
+    borderColor:
+      'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
     borderWidth: 2,
     width: '95%',
-    padding: 35
+    padding: 35,
   },
   buttonContainer: {
     width: 60,
@@ -59,18 +59,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: 'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)'
+    borderColor:
+      'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
   },
   title: {
     fontSize: 40,
     fontWeight: 'bold',
-
   },
   title_guide: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 30,
-    color: 'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)'
+    color:
+      'linear-gradient(109.6deg, rgb(5, 84, 94) 16%, rgb(187, 187, 187) 91.1%)',
   },
   content_guide: {
     fontSize: 13,
@@ -86,7 +87,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 45,
     paddingVertical: 12,
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: 'lightgrey',
   },
   dropdownButtonTxtStyle: {
@@ -110,7 +111,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#B1BDC8',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   dropdownItemTxtStyle: {
     flex: 1,
@@ -137,21 +138,21 @@ export const styles = StyleSheet.create({
   notification: {
     borderRadius: 20,
     backgroundColor: 'white',
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: 'lightgrey',
-    padding:16
-},
-notificationImage: {
-  width: 25,
-  height: 25,
-},
-stickyFooter: {
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  bottom: 0,
-  padding: 20,
-  alignItems: 'center',
-  backgroundColor: 'transparent',
-},
+    padding: 16,
+  },
+  notificationImage: {
+    width: 25,
+    height: 25,
+  },
+  stickyFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
 });
